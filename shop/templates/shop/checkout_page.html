@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart</title>
+</head>
+<body>
+    <p>User Name: {{ request.user.username }}</p>
+    {% for item in cart %}
+        <p>Product ID: {{ item.product_id }}</p>
+    {% endfor %}
+    <a href="{% url 'shop:cart_detail' %}"><span>Edit Cart</span></a>
+
+    <br>
+    <br>
+    <br>
+    <p>Shipping Location</p>
+    <br>
+    <br>
+    <br>
+    <P>Payment Handling</P>
+</body>
+</html>
