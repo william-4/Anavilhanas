@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>index</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <h1>Products Available</h1>
+    {% if products %}
+    <ul>
+        {% for product in products %}
+            <li>{{ product.product_name }}</li>
+            <li>{{ product.product_category }}</li>
+            <li>{{ product.product_price }}</li>
+            <li>{{ product.product_quantity }}</li>
+            <li>{{ product.Product_description }}</li>
+            <li>{{ product.product_features }}</li>
+            <li><a href="{% url 'shop:product' product.id %}"><span>View Product</span></a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>No products currently available.</p>
+    {% endif %}
+</body>
+</html>
