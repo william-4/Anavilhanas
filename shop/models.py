@@ -19,8 +19,12 @@ class Products(models.Model):
     product_quantity = models.IntegerField("quantity", default=0)
     Product_description = models.CharField("description", max_length=300)
     product_features = models.CharField("features", max_length=300)
+    image_1 = models.ImageField(default='default.jpg', blank=True)
     product_created = models.DateTimeField("date_added", auto_now_add=True)
     product_updated = models.DateTimeField("date_updated", auto_now=True)
+
+    def __str__(self):
+        return (f"ID: {self.id}, Name: {self.product_name}")
 
 
 class Cart(models.Model):
