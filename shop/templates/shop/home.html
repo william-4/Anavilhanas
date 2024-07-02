@@ -4,13 +4,16 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        Hi {{ user.username }}!
+        <p>Hi {{ user.username }}!</p>
+        <p>Welcome to Anavilhanas shopping experience</p>
         <form action="{% url 'shop:logout' %}" method="post">
             {% csrf_token %}
             <button type="submit">Log Out</button>
         </form>
     {% else %}
+        <p>Welcome to Anavilhanas shoping experience</p>
         <p>You are not logged in</p>
         <a href="{% url 'shop:login' %}">Log In</a>
+        <a href="{% url 'shop:register' %}">Register</a>
     {% endif %}
 {% endblock %}
