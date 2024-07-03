@@ -4,12 +4,12 @@
     <title>{{ product.name }}</title>
 </head>
 <body>
-    <p>Name: {{ product.product_name }}</p>
-    <p>Category: {{ product.product_category }}</p>
-    <p>Price: {{ product.product_price }}</p>
-    <p>Quantity: {{ product.product_quantity }}</p>
-    <p>Description: {{ product.Product_description }}</p>
-    <p>Features: {{ product.product_features }}</p>
+    <p>Name: {{ product.name }}</p>
+    <p>Category: {{ product.category.name }}</p>
+    <p>Price: {{ product.price }}</p>
+    <p>Quantity: {{ product.quantity }}</p>
+    <p>Description: {{ product.description }}</p>
+    <p>Features: {{ product.features }}</p>
     <a href="{% url 'shop:add_to_cart' product.id %}"><span>Add to Cart</span></a>
     <br>
     <br>
@@ -18,12 +18,12 @@
     {% if other_products %}
     <ul>
         {% for product in other_products %}
-            <li>{{ product.product_name }}</li>
-            <li>{{ product.product_category }}</li>
-            <li>{{ product.product_price }}</li>
-            <li>{{ product.product_quantity }}</li>
-            <li>{{ product.Product_description }}</li>
-            <li>{{ product.product_features }}</li>
+            <li>{{ product.name }}</li>
+            <li>{{ product.category.name }}</li>
+            <li>{{ product.price }}</li>
+            <li>{{ product.quantity }}</li>
+            <li>{{ product.description }}</li>
+            <li>{{ product.features }}</li>
             <li><a href="{% url 'shop:product' product.id %}"><span>View Product</span></a></li>
         {% endfor %}
     </ul>

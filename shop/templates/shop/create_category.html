@@ -1,0 +1,19 @@
+<!-- templates/register.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add category</title>
+</head>
+<body>
+    <p>Total count of categories in the database is {{ count }}</p>
+    {% if item_exists %}
+        <p> Category already exists </p>
+    {% endif %}
+    <h2>Add New Category</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sign Up</button>
+    </form>
+</body>
+</html>

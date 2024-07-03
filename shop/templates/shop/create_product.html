@@ -1,0 +1,19 @@
+<!-- templates/register.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add product</title>
+</head>
+<body>
+    {% if item_exists %}
+        <p> Product already exists in the database </p>
+    {% endif %}
+    <p>Total count of products in the database is {{ count }}</p>
+    <h2>Add New Product</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

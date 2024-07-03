@@ -1,8 +1,11 @@
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 from django.views.generic.base import TemplateView
 
 from . import views
+
 
 
 app_name = "shop"
@@ -18,6 +21,8 @@ urlpatterns = [
     #path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
     path("home", views.home, name="home"),
     path("products", views.products, name="products"),
+    path("create_product", views.create_product, name="create_product"),
+    path("create_category", views.create_category, name="create_category"),
     path("top_categories", views.top_categories, name="top_categories"),
     path("categories", views.categories, name="categories"),
     path("product/<int:product_id>/", views.product, name="product"),
@@ -25,3 +30,7 @@ urlpatterns = [
     path('cart/', views.cart_detail, name='cart_detail'),
     path('checkout/<int:cart_id/', views.checkout, name="checkout"),
 ]
+
+# Serving media files only during development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

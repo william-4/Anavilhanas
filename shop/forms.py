@@ -18,16 +18,21 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
-    
-class CombinedForm(forms.Form):
+
+class categoriesForm(forms.ModelForm):
+    class Meta:
+        model = Categories
+        fields = ['name', 'description']
+
+class combinedForm(forms.Form):
     name = forms.CharField(max_length=100)
     category = forms.ModelChoiceField(queryset=Categories.objects.all())
     price = forms.IntegerField()
     quantity = forms.IntegerField()
     description = forms.CharField(max_length=300)
     features = forms.CharField(max_length=300)
-    image1_url = forms.CharField(max_length=100)
-    image2_url = forms.CharField(max_length=100)
-    image3_url = forms.CharField(max_length=100)
-    image4_url = forms.CharField(max_length=100)
-    image5_url = forms.CharField(max_length=100)
+    image1_url = forms.ImageField()
+    image2_url = forms.ImageField()
+    image3_url = forms.ImageField()
+    image4_url = forms.ImageField()
+    image5_url = forms.ImageField()

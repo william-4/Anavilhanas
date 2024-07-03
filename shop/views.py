@@ -12,34 +12,86 @@ from django.http import HttpResponse, JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate
 
-from .forms import CustomUserCreationForm, CombinedForm
+from .forms import CustomUserCreationForm, combinedForm, categoriesForm
 from .models import Addresses, Categories, Products, Images, Carts, cartItems, Orders
 
 
 def create_product(request):
     if request.method == 'POST':
-        form = CombinedForm(request.POST)
+        form = combinedForm(request.POST, request.FILES)
         if form.is_valid():
-            product = Products.objects.create(
-                name=form.cleaned_data['name'],
-                category=form.cleaned_data['category'],
-                price=form.cleaned_data['price'],
-                quantity=form.cleaned_data['quantity'],
-                description=form.cleaned_data['description'],
-                features=form.cleaned_data['features']
-            )
-            Images.objects.create(
-                product=product,
-                image1_url=form.cleaned_data['image1_url'],
-                image2_url=form.cleaned_data['image2_url'],
-                image3_url=form.cleaned_data['image3_url'],
-                image4_url=form.cleaned_data['image4_url'],
-                image5_url=form.cleaned_data['image5_url']
-            )
-            return redirect('product_list')  # Adjust the redirect as needed
+            if not Products.objects.filter(name=form.cleaned_data['name']).exists():
+                item_exists = False
+                product = Products.objects.create(
+                    name=form.cleaned_data['name'],
+                    category=form.cleaned_data['category'],
+                    price=form.cleaned_data['price'],
+                    quantity=form.cleaned_data['quantity'],
+                    description=form.cleaned_data['description'],
+                    features=form.cleaned_data['features']
+                )
+                Images.objects.create(
+                    product=product,
+                    image1=form.cleaned_data['image1_url'],
+                    image2=form.cleaned_data['image2_url'],
+                    image3=form.cleaned_data['image3_url'],
+                    image4=form.cleaned_data['image4_url'],
+                    image5=form.cleaned_data['image5_url']
+                )
+                count = Products.objects.count()
+                if count:
+                    context =  {
+                        "form": form,
+                        "count": count,
+                        "item_exists": item_exists,
+                    }
+                return render(request, 'shop/create_product.html', context)
+            else:
+                item_exists = True
+                count = Products.objects.count()
+                if count:
+                    context =  {
+                        "form": form,
+                        "count": count,
+                        "item_exists": item_exists,
+                    }
+                return render(request, 'shop/create_product.html', context)
     else:
-        form = CombinedForm()
+        form = combinedForm()
     return render(request, 'shop/create_product.html', {'form': form})
+
+
+def create_category(request):
+    if request.method == "POST":
+        form = categoriesForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data.get('name')
+            item_exists = False
+            if Categories.objects.filter(name=name).exists():
+                item_exists = True
+                count = Categories.objects.count()
+                context = {
+                    "form": form,
+                    "count": count,
+                    "item_exists": item_exists,
+                }
+                return render(request, 'shop/create_category.html', context)
+            else:
+                category = form.save()
+                count = Categories.objects.count()
+                context = {
+                    "form": form,
+                    "count": count,
+                }
+                return render(request, 'shop/create_category.html', context)
+    else:
+        form = categoriesForm()
+        count = Categories.objects.count()
+        context = {
+            "form": form,
+            "count": count,
+        }
+    return render(request, 'shop/create_category.html', context)
 
 
 def register(request):
@@ -67,7 +119,7 @@ def products(request):
     products_list = list(products.values())
     if products_list:
         context =  {
-            "products": products_list
+            "products": products
         }
         return render(request, "shop/products.html", context)
     else:
@@ -120,82 +172,89 @@ def product(request, product_id):
     other_products = list(others.values())
     context = {
         "product": product,
-        "other_products": other_products,
+        "other_products": others,
     }
-    return render(request, "shop/product_page.html", context)
+    return render(request, "shop/product.html", context)
 
 
 def add_to_cart(request, product_id):
     """Adds the specific product to the cart"""
     # Check if user_id exists in the cart table. If yes, add item to cart_items table while maintaining the cart_id.
     user = request.user
-
+    cart = None
     try:
-        cart = get_object_or_404(Carts, user_id=user.id, active=True)
+        cart = get_object_or_404(Carts, user=user, active=True)
     except:
-        cart = Carts.objects.create(user_id=user.id, active=True)
+        cart = Carts.objects.create(user=user, active=True)
         try:
-            cart = get_object_or_404(Carts, user_id=user.id, active=True)
+            cart = get_object_or_404(Carts, user=user, active=True)
         except:
             return JsonResponse(f"User {user.id} has refused to create cart", safe=False)
 
     # Check if product exists in cart and update quantity value else create new cartItem
-    cart_item = get_object_or_404(cartItems, cart_id=cart.id, product_id=product_id)
-    if cart_item:
+    try:
+        product = get_object_or_404(Products, pk=product_id)
+        cart_item = get_object_or_404(cartItems, cart=cart, product=product,)
         cart_item.quantity += 1
-    else:
-        cartItems.objects.create(cart_id=cart.id, product_id=product_id, quantity=1)
+    except:
+        product = get_object_or_404(Products, pk=product_id)
+        cartItems.objects.create(cart=cart, product=product, quantity=1)
     return HttpResponse(f"User {user.id} has a cart of id {cart.id}")
 
 
 def add_quantity(request, product_id):
     """Add the quantity of the specific product"""
     user = request.user
-
+    cart = None
+    cart_item = None
     try:
-        cart = get_object_or_404(Carts, user_id=user.id, active=True)
+        cart = get_object_or_404(Carts, user=user, active=True)
     except:
         return JsonResponse(f"User {user.id} has no cart but wants to add quantity", safe=False)
 
     # Check if product exists in cart and update quantity value else raise an error
     try:
-        cart_item = get_object_or_404(cartItems, cart_id=cart.id, product_id=product_id)
+        product = get_object_or_404(Products, pk=product_id)
+        cart_item = get_object_or_404(cartItems, cart=cart, product=product)
     except:
         return JsonResponse(f"User {user.id} has no cartItem but wants to add quantity", safe=False)
     if cart_item:
         cart_item.quantity += 1
-    return HttpResponse(f"Product {product_id} for User {user.id} has update quantity")
+    return HttpResponse(f"Product {product.id} for User {user.id} has update quantity")
 
 
 # Cart Page
 def cart_detail(request):
     """Returns json of the items in the cart for the specific user"""
-    try:
-        # Get the cart for the current user
-        cart = get_object_or_404(Carts, user_id=request.user.id, active=True)
-        # Get all items in the cart
-        cart_items = cartItems.objects.filter(cart_id=cart.id)
-    except Carts.DoesNotExist:
-        # Handle the case where the cart does not exist
-        return HttpResponse("Cart does not exist")
-    context = {
-        'cart_items': cart_items,
-        'cart_id': cart.id,
-    }
-    return render(request, "shop/cart_page.html", context)
+    if request.user:
+        try:
+            # Get the cart for the current user
+            cart = get_object_or_404(Carts, user=request.user, active=True)
+            # Get all items in the cart
+            cart_items = cartItems.objects.filter(cart=cart)
+        except Carts.DoesNotExist:
+            # Handle the case where the cart does not exist
+            return HttpResponse("Cart does not exist")
+        context = {
+            'cart_items': cart_items,
+            'cart_id': cart.id,
+        }
+        return render(request, "shop/cart.html", context)
+    else:
+        return HttpResponse("User is not logged in")
 
 
-def delete(request, product_id):
+def delete(request, product):
     """Deletes a product from the cart"""
     try:
         # Get the cart for the current user
-        cart = get_object_or_404(Carts, user_id=request.user.id, active=True)
+        cart = get_object_or_404(Carts, user=request.user, active=True)
     except Carts.DoesNotExist:
         # Handle the case where the cart does not exist
         return HttpResponse("Cart does not exist")
-    cart_item = cartItems.objects.filter(cart_id=cart.id, product_id=product_id)
+    cart_item = cartItems.objects.filter(cart=cart, product=product)
     cart_item.delete()
-    return HttpResponse(f"Product {product_id} has been deleted from user {request.user.id} cart.")
+    return HttpResponse(f"Product {product.id} has been deleted from user {request.user.id} cart.")
 
 
 

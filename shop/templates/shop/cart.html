@@ -6,7 +6,10 @@
 <body>
     <p>User Name: {{ request.user.username }}</p>
     {% for item in cart_items %}
-        <p>Product ID: {{ item.product_id }}</p>
+        <p>Product ID: {{ item.product.id }}</p>
+        <p>Product name: {{ item.product.name }}</p>
+        <p>Product quantity: {{ item.product.quantity }}</p>
+
     {% endfor %}
     <a href="{% url 'shop:home' %}"><span>Proceed to Checkout</span></a>
 </body>
