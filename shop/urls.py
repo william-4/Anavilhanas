@@ -29,7 +29,7 @@ urlpatterns = [
     path("product/<int:product_id>/", views.product, name="product"),
     path("product/<int:product_id>/add_to_cart/", views.add_to_cart, name="add_to_cart"),
     path('cart/', views.cart_detail, name='cart_detail'),
-    path('checkout/<int:cart_id/', views.checkout, name="checkout"),
+    path('checkout/', views.checkout, name="checkout"),
 ]
 
 # Serving media files only during development

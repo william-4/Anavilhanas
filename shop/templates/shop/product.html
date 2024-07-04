@@ -4,6 +4,7 @@
     <title>{{ product.name }}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <p>Name: {{ product.name }}</p>
@@ -31,7 +32,8 @@
             {% endif %}
         {% endfor %}
     </div>
-    <a href="{% url 'shop:add_to_cart' product.id %}"><span>Add to Cart</span></a>
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    <button id="add-to-cart" data-product-id="{{ product.id }}">Add to Cart</button>
     <br>
     <br>
     <br>
@@ -70,5 +72,41 @@
     {% else %}
         <p>No products currently available.</p>
     {% endif %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        var inCart = "{{ in_cart }}";
+        if (inCart === "True") {
+            $('#add-to-cart').text('Added to Cart');
+            $('#add-to-cart').prop('disabled', true);
+        }
+        $('#add-to-cart').click(function() {
+            let product_id = $(this).data('product-id');
+            let csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+            let url = `/product/${product_id}/add_to_cart/`;  // Construct the URL with product ID
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    product_id: product_id,
+                    csrfmiddlewaretoken: csrfToken
+                },
+                success: function(response) {
+                    // Handle successful addition (e.g., update button text)
+                    alert('Item added to cart successfully');
+                    $('#add-to-cart').text('Added to Cart');
+                    $('#add-to-cart').prop('disabled', true);
+                },
+                error: function(response) {
+                    // Handle error (e.g., display an error message)
+                    alert('Failed to add to cart');
+                }
+            });
+        });
+    });
+    </script>
+
 </body>
 </html>

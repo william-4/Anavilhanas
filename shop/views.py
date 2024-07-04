@@ -174,54 +174,77 @@ def product(request, product_id):
     context = {
         "product": product,
         "other_products": others,
+        "in_cart": "False"
     }
+    try:
+        cart = Carts.objects.get(user=request.user, active=True)
+    except Carts.DoesNotExist:
+        return render(request, "shop/product.html", context)
+    try:
+        item = cartItems.objects.get(cart=cart, product=product)
+    except cartItems.DoesNotExist:
+        return render(request, "shop/product.html", context)
+    context["in_cart"] = "True"
     return render(request, "shop/product.html", context)
-
+   
 
 def add_to_cart(request, product_id):
     """Adds the specific product to the cart"""
     # Check if user_id exists in the cart table. If yes, add item to cart_items table while maintaining the cart_id.
-    user = request.user
-    cart = None
-    try:
-        cart = get_object_or_404(Carts, user=user, active=True)
-    except:
-        cart = Carts.objects.create(user=user, active=True)
-        try:
-            cart = get_object_or_404(Carts, user=user, active=True)
-        except:
-            return JsonResponse(f"User {user.id} has refused to create cart", safe=False)
+    if request.method == 'POST':
+        user = request.user
 
-    # Check if product exists in cart and update quantity value else create new cartItem
-    try:
-        product = get_object_or_404(Products, pk=product_id)
-        cart_item = get_object_or_404(cartItems, cart=cart, product=product,)
-        cart_item.quantity += 1
-    except:
-        product = get_object_or_404(Products, pk=product_id)
-        cartItems.objects.create(cart=cart, product=product, quantity=1)
-    return HttpResponse(f"User {user.id} has a cart of id {cart.id}")
+        try:
+            product = Products.objects.get(id=product_id)
+            # Check if the product is already in the cart
+            cart, cart_created = Carts.objects.get_or_create(user=user, active=True, defaults={'user': user, 'active': True})
+            item, item_created = cartItems.objects.get_or_create(cart=cart, product=product, defaults={'cart': cart, 'product': product})
+            if not item_created:
+                return JsonResponse({'status': 'success'})
+            item.save()
+            return JsonResponse({'status': 'success'})
+        except Products.DoesNotExist:
+            return JsonResponse({'status': 'fail', 'message': 'Product not found'}, status=404)
+    return JsonResponse({'status': 'fail', 'message': 'Invalid request method'}, status=400)
 
 
 def add_quantity(request, product_id):
     """Add the quantity of the specific product"""
-    user = request.user
-    cart = None
-    cart_item = None
-    try:
-        cart = get_object_or_404(Carts, user=user, active=True)
-    except:
-        return JsonResponse(f"User {user.id} has no cart but wants to add quantity", safe=False)
+    if request.method == 'POST':
+        user = request.user
 
-    # Check if product exists in cart and update quantity value else raise an error
-    try:
-        product = get_object_or_404(Products, pk=product_id)
-        cart_item = get_object_or_404(cartItems, cart=cart, product=product)
-    except:
-        return JsonResponse(f"User {user.id} has no cartItem but wants to add quantity", safe=False)
-    if cart_item:
-        cart_item.quantity += 1
-    return HttpResponse(f"Product {product.id} for User {user.id} has update quantity")
+        try:
+            product = Products.objects.get(id=product_id)
+            # Check if the product is already in the cart
+            cart, cart_created = Carts.objects.get_or_create(user=user, active=True, defaults={'user': user, 'active': True})
+            item, item_created = cartItems.objects.get_or_create(cart=cart, product=product, defaults={'cart': cart, 'product': product, 'quantity': 1})
+            if not item_created:
+                item.quantity += 1
+            item.save()
+            return JsonResponse({'status': 'success'})
+        except Products.DoesNotExist:
+            return JsonResponse({'status': 'fail', 'message': 'Product not found'}, status=404)
+    return JsonResponse({'status': 'fail', 'message': 'Invalid request method'}, status=400)
+
+
+def subtract_quantity(request, product_id):
+    """Add the quantity of the specific product"""
+    if request.method == 'POST':
+        user = request.user
+
+        try:
+            product = Products.objects.get(id=product_id)
+            # Check if the product is already in the cart
+            cart, cart_created = Carts.objects.get_or_create(user=user, active=True, defaults={'user': user, 'active': True})
+            item, item_created = cartItems.objects.get_or_create(cart=cart, product=product, defaults={'cart': cart, 'product': product, 'quantity': 1})
+            if not item_created:
+                if item.quantity > 1:
+                    item.quantity -= 1
+            item.save()
+            return JsonResponse({'status': 'success'})
+        except Products.DoesNotExist:
+            return JsonResponse({'status': 'fail', 'message': 'Product not found'}, status=404)
+    return JsonResponse({'status': 'fail', 'message': 'Invalid request method'}, status=400)
 
 
 # Cart Page
@@ -268,13 +291,28 @@ def shipping_cost(request, user_id):
 def total_price(request, cart_id):
     """Calculates total price of the products in the cart inclusive of the shipping cost"""
 
-def checkout(request, cart_id):
+def checkout(request):
     """
     Adds order to order table, maintaining link to user.
     Adds cart items to order table
     Returns checkout page
     """
-    return render(request, "shop/checkout_page.html")
+    if request.user:
+        try:
+            # Get the cart for the current user
+            cart = get_object_or_404(Carts, user=request.user, active=True)
+            # Get all items in the cart
+            cart_items = cartItems.objects.filter(cart=cart)
+        except Carts.DoesNotExist:
+            # Handle the case where the cart does not exist
+            return HttpResponse("Cart does not exist")
+        context = {
+            'cart_items': cart_items,
+            'cart_id': cart.id,
+        }
+        return render(request, "shop/checkout.html", context)
+    else:
+        return HttpResponse("User is not logged in")
 
 
 # Checkout Page

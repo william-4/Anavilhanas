@@ -10,10 +10,17 @@
     {% endif %}
     <p>Total count of products in the database is {{ count }}</p>
     <h2>Add New Product</h2>
-    <form method="post" enctype="multipart/form-data">
+    <form id="my-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Submit</button>
     </form>
+
+    <script>
+        document.getElementById('my-form').addEventListener('submit', function(event) {        
+            // Clear the form fields
+            document.getElementById('my-form').reset();
+        });
+    </script>
 </body>
 </html>

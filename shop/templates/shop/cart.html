@@ -2,15 +2,43 @@
 <html>
 <head>
     <title>Cart</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <p>User Name: {{ request.user.username }}</p>
     {% for item in cart_items %}
         <p>Product ID: {{ item.product.id }}</p>
         <p>Product name: {{ item.product.name }}</p>
-        <p>Product quantity: {{ item.quantity }}</p>
+        <p>Product description: {{ item.product.description }}</p>
+        <p>Product quantity: </p>
+        <button class="add" data-product-id="{{ product.id }}">Add</button>
+        <input type="number" class="quantity" value="1" min="1" data-product-id="{{ product.id }}">
+        <button class="subtract" data-product-id="{{ product.id }}">Subtract</button>
 
     {% endfor %}
-    <a href="{% url 'shop:home' %}"><span>Proceed to Checkout</span></a>
+    <p><a href="{% url 'shop:checkout' %}"><span>Proceed to Checkout</span></a></p>
+    <!-- JavaScript -->
+    <!-- JavaScript -->
+    <script>
+        $(document).ready(function() {
+            // Add quantity
+            $('.add').click(function() {
+                let productId = $(this).data('product-id');
+                let $quantityInput = $('.quantity[data-product-id="' + productId + '"]');
+                let quantity = parseInt($quantityInput.val());
+                $quantityInput.val(quantity + 1);
+            });
+    
+            // Subtract quantity
+            $('.subtract').click(function() {
+                let productId = $(this).data('product-id');
+                let $quantityInput = $('.quantity[data-product-id="' + productId + '"]');
+                let quantity = parseInt($quantityInput.val());
+                if (quantity > 1) {
+                    $quantityInput.val(quantity - 1);
+                }
+            });
+        });
+    </script>
 </body>
 </html>

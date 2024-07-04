@@ -4,9 +4,13 @@
     <title>Cart</title>
 </head>
 <body>
+    <p>Order For: </p>
     <p>User Name: {{ request.user.username }}</p>
-    {% for item in cart %}
+    {% for item in cart_items %}
         <p>Product ID: {{ item.product_id }}</p>
+        <p>Product name: {{ item.product.name }}</p>
+        <p>Product description: {{ item.product.description }}</p>
+        <p>Product quantity: {{ item.quantity }}</p>
     {% endfor %}
     <a href="{% url 'shop:cart_detail' %}"><span>Edit Cart</span></a>
 
