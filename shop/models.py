@@ -40,7 +40,7 @@ class Products(models.Model):
 
 
 class Images(models.Model):
-    product = models.ForeignKey(Products, on_delete=models.PROTECT)
+    product = models.ForeignKey(Products, related_name='images', on_delete=models.PROTECT)
     image1 = models.ImageField(upload_to='products/images/')
     image2 = models.ImageField(upload_to='products/images/', blank=True, null=True)
     image3 = models.ImageField(upload_to='products/images/', blank=True, null=True)

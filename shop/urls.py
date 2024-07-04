@@ -11,6 +11,7 @@ from . import views
 app_name = "shop"
 
 urlpatterns = [
+    path('getAccessToken', views.getAccessToken, name='getAccessToken'),
     path('', views.home, name='home'),
     path('register/', views.register, name='register'),
     path("accounts/", include("django.contrib.auth.urls")),

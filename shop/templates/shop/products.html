@@ -5,6 +5,8 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>index</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
     <h1>Products Available</h1>
@@ -17,7 +19,26 @@
             <li>{{ product.quantity }}</li>
             <li>{{ product.description }}</li>
             <li>{{ product.features }}</li>
-            <li><a href="{% url 'shop:product' product.id %}"><span>View Product</span></a></li>
+            <div class="product-images">
+                {% for image in product.images.all %}
+                    {% if image.image1 %}
+                        <img src="{{ image.image1.url }}" alt="{{ product.name }} Image 1">
+                    {% endif %}
+                    {% if image.image2 %}
+                        <img src="{{ image.image2.url }}" alt="{{ product.name }} Image 2">
+                    {% endif %}
+                    {% if image.image3 %}
+                        <img src="{{ image.image3.url }}" alt="{{ product.name }} Image 3">
+                    {% endif %}
+                    {% if image.image4 %}
+                        <img src="{{ image.image4.url }}" alt="{{ product.name }} Image 4">
+                    {% endif %}
+                    {% if image.image5 %}
+                        <img src="{{ image.image5.url }}" alt="{{ product.name }} Image 5">
+                    {% endif %}
+                {% endfor %}
+                </div>
+                <li><a href="{% url 'shop:product' product.id %}"><span>View Product</span></a></li>
         {% endfor %}
     </ul>
     {% else %}

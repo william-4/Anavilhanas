@@ -14,6 +14,7 @@ from django.contrib.auth import login, authenticate
 
 from .forms import CustomUserCreationForm, combinedForm, categoriesForm
 from .models import Addresses, Categories, Products, Images, Carts, cartItems, Orders
+from .mpesa import getAccessToken
 
 
 def create_product(request):
@@ -115,7 +116,7 @@ def home(request):
 
 def products(request):
     """Returns a json of all the products in the database"""
-    products = Products.objects.all()
+    products = Products.objects.prefetch_related('images').all()
     products_list = list(products.values())
     if products_list:
         context =  {
