@@ -11,8 +11,10 @@ Functions:
 from django.http import HttpResponse, JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.models import User
 
-from .forms import CustomUserCreationForm, combinedForm, categoriesForm
+
+from .forms import CustomUserCreationForm, combinedForm, categoriesForm, addressesForm
 from .models import Addresses, Categories, Products, Images, Carts, cartItems, Orders
 from .mpesa import getAccessToken
 
@@ -95,6 +97,19 @@ def create_category(request):
     return render(request, 'shop/create_category.html', context)
 
 
+def profile(request):
+    if request.method == "GET":
+        form1 = CustomUserCreationForm()
+        form2 = addressesForm()
+        context = {
+            "form1": form1,
+            "form2": form2,
+        }
+        return render(request, 'shop/profile.html', context)
+    if request.method == "POST":
+        return JsonResponse("Form Post")
+
+
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -140,12 +155,6 @@ def top_categories(request):
     categories = Categories.objects.all()
     categories_list = list(categories)[:4]
     return JsonResponse(categories_list, safe=False)
-
-
-# Profile Page
-def profile(request):
-    """Returns a json of the user's profile information and shipping address from the database"""
-
 
 # Categories Page
 def sort(request, parameter):
@@ -314,10 +323,6 @@ def checkout(request):
     else:
         return HttpResponse("User is not logged in")
 
-
-# Checkout Page
-def profile(request, user_id):
-    """Returns information about the specific user"""
 
 def ship_to_different_address(request, user_id):
     """

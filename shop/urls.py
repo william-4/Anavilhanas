@@ -22,6 +22,7 @@ urlpatterns = [
     #path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
     path("home", views.home, name="home"),
     path("products", views.products, name="products"),
+    path("profile", views.profile, name="profile"),
     path("create_product", views.create_product, name="create_product"),
     path("create_category", views.create_category, name="create_category"),
     path("top_categories", views.top_categories, name="top_categories"),

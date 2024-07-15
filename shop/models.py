@@ -2,7 +2,15 @@
 
 
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+
+class CustomUser(AbstractUser):
+    phone_number = models.CharField(max_length=15, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return self.username
 
 
 class Addresses(models.Model):
@@ -10,7 +18,7 @@ class Addresses(models.Model):
     city = models.CharField(max_length=100)
     town = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
-    estate = models.CharField(max_length=100)
+    major_road = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

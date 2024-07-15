@@ -1,28 +1,23 @@
 """ Module defining the forms used in the application """
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from .models import Categories, Images, Products
+from django.contrib.auth.models import AbstractUser
+from .models import Categories, Addresses, CustomUser, Images, Products
 
-class CustomUserCreationForm(UserCreationForm):
-    """ Form to create a new user """
-    email = forms.EmailField(required=True)
-
+class customUserCreationForm(UserCreationForm):
     class Meta:
-        model = User
-        fields = ('username', 'email', 'password1', 'password2')
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.email = self.cleaned_data['email']
-        if commit:
-            user.save()
-        return user
+        model = CustomUser
+        fields = ('first name', 'last name', 'email', 'password1', 'password2', 'phone_number', 'date_of_birth', 'city')
 
 class categoriesForm(forms.ModelForm):
     class Meta:
         model = Categories
         fields = ['name', 'description']
+
+class addressesForm(forms.ModelForm):
+    class Meta:
+        model = Addresses
+        fields = ['city', 'town', 'location', 'major_road', 'description']
 
 class combinedForm(forms.Form):
     name = forms.CharField(max_length=100)
