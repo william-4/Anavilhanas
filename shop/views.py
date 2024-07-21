@@ -6,17 +6,20 @@ Functions:
 - add: Returns the sum of two numbers.
 - subtract: Returns the difference of two numbers.
 """
-
+import itertools
 
 from django.http import HttpResponse, JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-from .forms import CustomUserCreationForm, combinedForm, categoriesForm, addressesForm
-from .models import Addresses, Categories, Products, Images, Carts, cartItems, Orders
+from .forms import customUserCreationForm, customUserEditForm, combinedForm, categoriesForm, addressesForm
+from .models import Addresses, Categories, Products, Images, Carts, cartItems, Orders, customUser
 from .mpesa import getAccessToken
+from .mpesa import initiate_stk_push, process_stk_callback
 
 
 def create_product(request):
@@ -25,22 +28,23 @@ def create_product(request):
         if form.is_valid():
             if not Products.objects.filter(name=form.cleaned_data['name']).exists():
                 item_exists = False
-                product = Products.objects.create(
-                    name=form.cleaned_data['name'],
-                    category=form.cleaned_data['category'],
-                    price=form.cleaned_data['price'],
-                    quantity=form.cleaned_data['quantity'],
-                    description=form.cleaned_data['description'],
-                    features=form.cleaned_data['features']
-                )
-                Images.objects.create(
-                    product=product,
-                    image1=form.cleaned_data['image1_url'],
-                    image2=form.cleaned_data['image2_url'],
-                    image3=form.cleaned_data['image3_url'],
-                    image4=form.cleaned_data['image4_url'],
-                    image5=form.cleaned_data['image5_url']
-                )
+                for i in range(10):
+                    product = Products.objects.create(
+                        name=form.cleaned_data['name'] + ' ' + str(i),
+                        category=form.cleaned_data['category'],
+                        price=form.cleaned_data['price'],
+                        quantity=form.cleaned_data['quantity'],
+                        description=form.cleaned_data['description'] + ' ' + str(i),
+                        features=form.cleaned_data['features'] + ' ' + str(i)
+                    )
+                    Images.objects.create(
+                        product=product,
+                        image1=form.cleaned_data['image1_url'],
+                        image2=form.cleaned_data['image2_url'],
+                        image3=form.cleaned_data['image3_url'],
+                        image4=form.cleaned_data['image4_url'],
+                        image5=form.cleaned_data['image5_url']
+                    )
                 count = Products.objects.count()
                 if count:
                     context =  {
@@ -97,49 +101,72 @@ def create_category(request):
     return render(request, 'shop/create_category.html', context)
 
 
+def edit_profile(request):
+    first_time = False
+    try:
+        address = get_object_or_404(Addresses, user=request.user)
+    except:
+        first_time = True
+    if first_time and request.method == "POST":
+        form = addressesForm(request.POST)
+    else:
+        form = addressesForm(request.POST, instance=address)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.user = request.user
+        instance.save()
+        return redirect('shop:profile')
+    if request.method == 'GET':
+        if first_time:
+            form = addressesForm()
+        else:
+            form = addressesForm(instance=address)
+        context = {
+            "form": form,
+        }
+        return render(request, 'shop/edit_profile.html', context)
+
+@login_required(login_url = 'shop:login')
 def profile(request):
-    if request.method == "GET":
-        form1 = CustomUserCreationForm()
-        form2 = addressesForm()
+    form1 = customUserCreationForm(instance=request.user)
+    try:
+        address = get_object_or_404(Addresses, user=request.user)
+    except:
+        address = None
+    if request.method == 'GET':
+        if address:
+            form2 = addressesForm(instance=address)
+        else:
+            form2 = addressesForm()
         context = {
             "form1": form1,
             "form2": form2,
         }
-        return render(request, 'shop/profile.html', context)
-    if request.method == "POST":
-        return JsonResponse("Form Post")
+        return render(request, 'shop/profile.html', context=context)
+
 
 
 def register(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = customUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            username = customUser.objects.get(email=email).username
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('shop:home')
+            if user is not None:
+                login(request, user)
+                return redirect('shop:home')
+            else:
+                return HttpResponse("Invalid credentials")
     else:
-        form = CustomUserCreationForm()
+        form = customUserCreationForm()
     return render(request, 'shop/register.html', {'form': form})
 
 
 def home(request):
     return render(request, 'shop/home.html')
-
-
-def products(request):
-    """Returns a json of all the products in the database"""
-    products = Products.objects.prefetch_related('images').all()
-    products_list = list(products.values())
-    if products_list:
-        context =  {
-            "products": products
-        }
-        return render(request, "shop/products.html", context)
-    else:
-        return HttpResponse("No products in the products table")
 
 
 # Home Page
@@ -164,19 +191,57 @@ def sort(request, parameter):
     """
 
 
-def categories(request):
+def products(request):
     """Returns a json of all categories from the database"""
     categories = Categories.objects.all()
-    categories_list = list(categories)
-    return JsonResponse(categories_list, safe=False)
+    # categories_list = list(categories)
+    category_products = Products.objects.filter(category=categories[0])
+    paginator = Paginator(category_products, 9)
+    page = request.GET.get('page')
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+    context = {
+        "categories": categories,
+        "products": products,
+    }
+    return render(request, 'shop/products.html', context=context)
 
-def category(request, category):
-    """Returns a json of all products in a specific category from the database"""
+def category(request, category_id):
+    """Returns a json of all categories from the database"""
+    categories = Categories.objects.all()
+    category = Categories.objects.get(id=category_id)
+    # categories_list = list(categories)
+    category_products = Products.objects.filter(category=category)
+    paginator = Paginator(category_products, 9)
+    page = request.GET.get('page')
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+    context = {
+        "categories": categories,
+        "products": products,
+    }
+    return render(request, 'shop/products.html', context=context)
 
+# Generator function to generate unique IDs
+def generate_user_id():
+    for i in itertools.count(1):
+        yield i
+
+# Initialize generator outside the view function
+gen = generate_user_id()
 
 # Product Page
 def product(request, product_id):
     """Returns json of all information about the specific product and other similar products"""
+    user = request.user
     product = get_object_or_404(Products, pk=product_id)
     others = Products.objects.all()[:4]
     other_products = list(others.values())
@@ -185,24 +250,38 @@ def product(request, product_id):
         "other_products": others,
         "in_cart": "False"
     }
-    try:
-        cart = Carts.objects.get(user=request.user, active=True)
-    except Carts.DoesNotExist:
+    # Create a new temporary user to keep track of their cart and payment
+    if not request.user.is_authenticated:
+        session_id = request.session.session_key
+        password = session_id
+        # Create a new user with a random password and save it to the database.
+        data = "Billions"
+        username = f"User-{next(gen)}"
+        user = customUser.objects.create_user(username=username, password=data, first_name=data, last_name=data, phone_number=data, email=data, city=data)
+        user = authenticate(username=username, password=data)
+        if user == None:
+            return HttpResponse("Error in authentication")
+        login(request, user)
+    # for my front end button handled using JQuery
+    if request.user.is_authenticated:
+        try:
+            cart = Carts.objects.get(user=user, active=True)
+        except Carts.DoesNotExist:
+            return render(request, "shop/product.html", context)
+        try:
+            item = cartItems.objects.get(cart=cart, product=product)
+        except cartItems.DoesNotExist:
+            return render(request, "shop/product.html", context)
+        context["in_cart"] = "True"
         return render(request, "shop/product.html", context)
-    try:
-        item = cartItems.objects.get(cart=cart, product=product)
-    except cartItems.DoesNotExist:
-        return render(request, "shop/product.html", context)
-    context["in_cart"] = "True"
-    return render(request, "shop/product.html", context)
    
 
+# Create a temporary user on addition of a product to cart or view of cart
 def add_to_cart(request, product_id):
     """Adds the specific product to the cart"""
     # Check if user_id exists in the cart table. If yes, add item to cart_items table while maintaining the cart_id.
     if request.method == 'POST':
         user = request.user
-
         try:
             product = Products.objects.get(id=product_id)
             # Check if the product is already in the cart
@@ -256,10 +335,10 @@ def subtract_quantity(request, product_id):
     return JsonResponse({'status': 'fail', 'message': 'Invalid request method'}, status=400)
 
 
-# Cart Page
+# Cart Page - Create a temporary user 
 def cart_detail(request):
     """Returns json of the items in the cart for the specific user"""
-    if request.user:
+    if request.user.is_authenticated:
         try:
             # Get the cart for the current user
             cart = get_object_or_404(Carts, user=request.user, active=True)
@@ -274,7 +353,10 @@ def cart_detail(request):
         }
         return render(request, "shop/cart.html", context)
     else:
-        return HttpResponse("User is not logged in")
+        context = {
+            "message": "No items in cart"
+        }
+        return render(request, 'shop/home.html', context)
 
 
 def delete(request, product):
@@ -288,7 +370,6 @@ def delete(request, product):
     cart_item = cartItems.objects.filter(cart=cart, product=product)
     cart_item.delete()
     return HttpResponse(f"Product {product.id} has been deleted from user {request.user.id} cart.")
-
 
 
 def shipping_cost(request, user_id):
@@ -359,9 +440,6 @@ def place_order(request, user_id, cart_id):
 # Order Confirmation Page
 def order_confirmation_details(request, order_id):
     """Returns order details and profile details"""
-
-def edit_profile(request, user_id):
-    """Takes user to profile page."""
 
 def continue_shopping(request):
     """Takes user to categories page"""

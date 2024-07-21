@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-e8n(4bvp4g%dd^(c1$gs5*ozx@0gyc6lyi&q_f@pl5d9plbp%e
 DEBUG = True
 
 # CUSTOM User Model
-AUTH_USER_MODEL = 'shop.CustomUser'
+AUTH_USER_MODEL = 'shop.customUser'
 
 ALLOWED_HOSTS = []
 

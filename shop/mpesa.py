@@ -7,8 +7,8 @@ import json
 import base64
 
 def getAccessToken(requests):
-    consumer_key = ""
-    consumer_secret = ""
+    consumer_key = "1pd7N5odpM49JYV9R8RRrBWbRK7stwhYZGsJxLm6fTvXB6ta"
+    consumer_secret = "lT2XOHRX13GX9LfS8x3oBU6cW8EICVv2DzNAg1er8rIHydVvaSZtrEVbeeAdZhou"
     access_token_url = ""
     headers = {'Content-Type': 'application/json'}
     auth = (consumer_key, consumer_secret)
@@ -30,7 +30,7 @@ def initiate_stk_push(request):
         access_token = access_token_json.get('access_token')
         if access_token:
             amount = 1
-            phone = "254768168060"
+            phone = "254718372119"
             process_request_url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
             callback_url = 'https://kariukijames.com/pesa/callback.php'
             passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
@@ -38,8 +38,8 @@ def initiate_stk_push(request):
             timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
             password = base64.b64encode((business_short_code + passkey + timestamp).encode()).decode()
             party_a = phone
-            party_b = '254708374149'
-            account_reference = 'UMESKIA SOFTWARES'
+            party_b = '254718372119'
+            account_reference = 'Anavilhanas'
             transaction_desc = 'stkpush test'
             stk_push_headers = {
                 'Content-Type': 'application/json',

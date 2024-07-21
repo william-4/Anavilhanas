@@ -4,17 +4,24 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-class CustomUser(AbstractUser):
+class customUser(AbstractUser):
     phone_number = models.CharField(max_length=15, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     city = models.CharField(max_length=100, blank=True)
+
+    def save(self, *args, **kwargs):
+        # Update username based on email and first_name
+        if not self.username:
+            self.username = self.email.split('@')[0] + '_' + self.first_name.lower()
+        super().save(*args, **kwargs)
+
 
     def __str__(self):
         return self.username
 
 
 class Addresses(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey('shop.customUser', on_delete=models.CASCADE)
     city = models.CharField(max_length=100)
     town = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
@@ -59,7 +66,7 @@ class Images(models.Model):
 
 
 class Carts(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey('shop.customUser', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=False)
@@ -73,7 +80,7 @@ class cartItems(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class Orders(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey('shop.customUser', on_delete=models.CASCADE)
     address = models.ForeignKey(Addresses, on_delete=models.PROTECT)
     shipping_cost = models.IntegerField(default=0)
     total_amount = models.IntegerField(default=0)

@@ -1,13 +1,23 @@
 """ Module defining the forms used in the application """
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import AbstractUser
-from .models import Categories, Addresses, CustomUser, Images, Products
+from .models import Categories, Addresses, customUser, Images, Products
 
 class customUserCreationForm(UserCreationForm):
     class Meta:
-        model = CustomUser
-        fields = ('first name', 'last name', 'email', 'password1', 'password2', 'phone_number', 'date_of_birth', 'city')
+        model = customUser
+        fields = ('first_name', 'last_name', 'email', 'city', 'phone_number', 'date_of_birth', 'password1', 'password2', )
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+class customUserEditForm(UserCreationForm):
+    class Meta:
+        model = customUser
+        fields = ('first_name', 'last_name', 'email', 'city', 'phone_number', 'date_of_birth')
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 class categoriesForm(forms.ModelForm):
     class Meta:

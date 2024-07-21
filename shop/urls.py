@@ -22,15 +22,19 @@ urlpatterns = [
     #path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
     path("home", views.home, name="home"),
     path("products", views.products, name="products"),
+    path("category/<int:category_id>/", views.category, name="category"),
     path("profile", views.profile, name="profile"),
+    path("edit_profile", views.edit_profile, name="edit_profile"),
     path("create_product", views.create_product, name="create_product"),
     path("create_category", views.create_category, name="create_category"),
     path("top_categories", views.top_categories, name="top_categories"),
-    path("categories", views.categories, name="categories"),
     path("product/<int:product_id>/", views.product, name="product"),
     path("product/<int:product_id>/add_to_cart/", views.add_to_cart, name="add_to_cart"),
     path('cart/', views.cart_detail, name='cart_detail'),
     path('checkout/', views.checkout, name="checkout"),
+    path('stk_callback/', views.process_stk_callback, name="mpesa_callback"),
+    path('stk_push/', views.initiate_stk_push, name="stk_push"),
+
 ]
 
 # Serving media files only during development

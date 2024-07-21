@@ -4,7 +4,7 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <p>Hi {{ user.username }}!</p>
+        <p>Hi {{ user.first_name }}!</p>
         <p>Welcome to Anavilhanas shopping experience</p>
         <form action="{% url 'shop:logout' %}" method="post">
             {% csrf_token %}

@@ -6,16 +6,25 @@
 </head>
 <body>
     <p>Personal Information</p>
-    <form method="post">
+    <form>
         {% csrf_token %}
-        {{ form1.as_p }}
-        <button type="submit">Save</button>
+        {% for field in form1 %}
+            <div>
+                <label>{{ field.label }}</label>
+                <input type="text" name="{{ field.name }}" value="{{ field.value }}" readonly>
+            </div>
+        {% endfor %}
     </form>
     <p>Address</p>
-    <form method="post">
+    <form>
         {% csrf_token %}
-        {{ form2.as_p }}
-        <button type="submit">Save</button>
+        {% for field in form2 %}
+            <div>
+                <label>{{ field.label }}</label>
+                <input type="text" name="{{ field.name }}" value="{{ field.value }}" readonly>
+            </div>
+        {% endfor %}
     </form>
+    <a href="{% url 'shop:edit_profile' %}"><button>Edit</button></a>
 </body>
 </html>
