@@ -1,10 +1,6 @@
-<!-- templates/register.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Profile Page</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <p>Personal Information</p>
     <form method="post">
         {% csrf_token %}

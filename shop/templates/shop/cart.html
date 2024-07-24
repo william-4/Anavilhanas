@@ -1,22 +1,147 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Cart</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}    
     <p>User Name: {{ request.user.username }}</p>
     {% for item in cart_items %}
-        <p>Product ID: {{ item.product.id }}</p>
-        <p>Product name: {{ item.product.name }}</p>
-        <p>Product description: {{ item.product.description }}</p>
-        <p>Product quantity: </p>
-        <button class="add" data-product-id="{{ product.id }}">Add</button>
-        <input type="number" class="quantity" value="1" min="1" data-product-id="{{ product.id }}">
-        <button class="subtract" data-product-id="{{ product.id }}">Subtract</button>
+    <p>Product ID: {{ item.product.id }}</p>
+    <p>Product name: {{ item.product.name }}</p>
+    <p>Product description: {{ item.product.description }}</p>
+    <p>Product quantity: </p>
+    <button class="add" data-product-id="{{ product.id }}">Add</button>
+    <input type="number" class="quantity" value="1" min="1" data-product-id="{{ product.id }}">
+    <button class="subtract" data-product-id="{{ product.id }}">Subtract</button>
 
     {% endfor %}
     <p><a href="{% url 'shop:checkout' %}"><span>Proceed to Checkout</span></a></p>
+      
+      <main class="flex flex-col items-end self-center px-5 mt-28 w-full max-w-[1208px] max-md:mt-10 max-md:max-w-full">
+        <h1 class="self-stretch text-4xl font-bold text-gray-900 max-md:max-w-full">Your Shopping Bag</h1>
+        
+        <section class="flex items-start px-6 py-6 mt-9 bg-white shadow-sm max-md:flex-wrap max-md:px-5">
+          <div class="flex gap-5 justify-between self-end pr-2 mt-1 max-md:flex-wrap">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6d3f0d98367568f8fb9162c327e4ed563dedb37af38ad2caedb05bd2ed0c5af9?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Modern Lounge Chair" class="shrink-0 max-w-full aspect-square w-[150px]" />
+            <div class="flex gap-5 justify-between my-auto max-md:flex-wrap max-md:max-w-full">
+              <div class="flex flex-col px-px text-sm text-gray-500">
+                <h2 class="text-2xl font-semibold text-gray-900">Modern Lounge Chair</h2>
+                <p class="mt-2 text-base leading-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <label for="color1" class="self-start mt-4 leading-[157%]">Color</label>
+                <div class="flex gap-2.5 justify-between self-start px-4 py-2 mt-1.5 font-medium text-center whitespace-nowrap bg-white border border-solid border-zinc-200 leading-[157%]">
+                  <span id="color1">White</span>
+                  <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/c6382a2d411d7138829689a456c452a05b59bd0b206de2fdad37dc95f5f0e82f?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="" class="shrink-0 my-auto w-3.5 aspect-square" />
+                </div>
+              </div>
+              <div class="flex gap-5 self-end mt-20 max-md:mt-10">
+                <div class="flex flex-col">
+                  <label for="quantity1" class="text-sm leading-5 text-gray-500">Quantity</label>
+                  <div class="flex overflow-hidden relative flex-col justify-center self-center mt-1.5 aspect-[3.25] w-[130px]">
+                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/d24e7a80dba1aab2ba84b1d796708ae5c396b4eabc9a61491bc2c2618eaf4b05?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="" class="object-cover absolute inset-0 size-full" />
+                    <div class="flex relative gap-5 justify-between px-9 bg-white border border-solid border-zinc-200 max-md:px-5">
+                      <button aria-label="Decrease quantity" class="shrink-0 w-px h-10 border border-solid bg-zinc-200 border-zinc-200"></button>
+                      <input type="number" id="quantity1" value="1" min="1" class="w-10 text-center" aria-label="Quantity" />
+                      <button aria-label="Increase quantity" class="shrink-0 self-start w-0 h-10 border border-solid bg-zinc-200 border-zinc-200"></button>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-end mt-11 text-lg font-medium leading-6 text-right text-gray-900 max-md:mt-10">158.99$</div>
+              </div>
+            </div>
+          </div>
+          <button aria-label="Remove item" class="shrink-0 self-start w-5 aspect-square">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b1221f82a2569b7c4b9bca1cbdf3a6bf501044c6368be26e07cbb72d01fedb0f?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Remove" />
+          </button>
+        </section>
+      
+        <section class="flex items-start px-6 py-6 mt-24 bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:mt-10">
+          <div class="flex gap-5 justify-between self-end pr-2 mt-1 max-md:flex-wrap">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6d3f0d98367568f8fb9162c327e4ed563dedb37af38ad2caedb05bd2ed0c5af9?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Modern Lounge Chair" class="shrink-0 max-w-full aspect-square w-[150px]" />
+            <div class="flex gap-5 justify-between my-auto max-md:flex-wrap max-md:max-w-full">
+              <div class="flex flex-col px-px text-sm text-gray-500">
+                <h2 class="text-2xl font-semibold text-gray-900">Modern Lounge Chair</h2>
+                <p class="mt-2 text-base leading-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <label for="color2" class="self-start mt-4 leading-[157%]">Color</label>
+                <div class="flex gap-2.5 justify-between self-start px-4 py-2 mt-1.5 font-medium text-center whitespace-nowrap bg-white border border-solid border-zinc-200 leading-[157%]">
+                  <span id="color2">White</span>
+                  <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/c6382a2d411d7138829689a456c452a05b59bd0b206de2fdad37dc95f5f0e82f?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="" class="shrink-0 my-auto w-3.5 aspect-square" />
+                </div>
+              </div>
+              <div class="flex gap-5 self-end mt-20 max-md:mt-10">
+                <div class="flex flex-col">
+                  <label for="quantity2" class="text-sm leading-5 text-gray-500">Quantity</label>
+                  <div class="flex overflow-hidden relative flex-col justify-center self-center mt-1.5 aspect-[3.25] w-[130px]">
+                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/d24e7a80dba1aab2ba84b1d796708ae5c396b4eabc9a61491bc2c2618eaf4b05?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="" class="object-cover absolute inset-0 size-full" />
+                    <div class="flex relative gap-5 justify-between px-9 bg-white border border-solid border-zinc-200 max-md:px-5">
+                      <button aria-label="Decrease quantity" class="shrink-0 w-px h-10 border border-solid bg-zinc-200 border-zinc-200"></button>
+                      <input type="number" id="quantity2" value="1" min="1" class="w-10 text-center" aria-label="Quantity" />
+                      <button aria-label="Increase quantity" class="shrink-0 self-start w-0 h-10 border border-solid bg-zinc-200 border-zinc-200"></button>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-end mt-11 text-lg font-medium leading-6 text-right text-gray-900 max-md:mt-10">158.99$</div>
+              </div>
+            </div>
+          </div>
+          <button aria-label="Remove item" class="shrink-0 self-start w-5 aspect-square">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b1221f82a2569b7c4b9bca1cbdf3a6bf501044c6368be26e07cbb72d01fedb0f?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Remove" />
+          </button>
+        </section>
+      
+        <section class="flex items-start px-6 py-6 mt-24 bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:mt-10">
+          <div class="flex gap-5 justify-between self-end pr-2 mt-1 max-md:flex-wrap">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6d3f0d98367568f8fb9162c327e4ed563dedb37af38ad2caedb05bd2ed0c5af9?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Modern Lounge Chair" class="shrink-0 max-w-full aspect-square w-[150px]" />
+            <div class="flex gap-5 justify-between my-auto max-md:flex-wrap max-md:max-w-full">
+              <div class="flex flex-col px-px text-sm text-gray-500">
+                <h2 class="text-2xl font-semibold text-gray-900">Modern Lounge Chair</h2>
+                <p class="mt-2 text-base leading-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <label for="color3" class="self-start mt-4 leading-[157%]">Color</label>
+                <div class="flex gap-2.5 justify-between self-start px-4 py-2 mt-1.5 font-medium text-center whitespace-nowrap bg-white border border-solid border-zinc-200 leading-[157%]">
+                  <span id="color3">White</span>
+                  <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/c6382a2d411d7138829689a456c452a05b59bd0b206de2fdad37dc95f5f0e82f?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="" class="shrink-0 my-auto w-3.5 aspect-square" />
+                </div>
+              </div>
+              <div class="flex gap-5 self-end mt-20 max-md:mt-10">
+                <div class="flex flex-col">
+                  <label for="quantity3" class="text-sm leading-5 text-gray-500">Quantity</label>
+                  <div class="flex overflow-hidden relative flex-col justify-center self-center mt-1.5 aspect-[3.25] w-[130px]">
+                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/d24e7a80dba1aab2ba84b1d796708ae5c396b4eabc9a61491bc2c2618eaf4b05?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="" class="object-cover absolute inset-0 size-full" />
+                    <div class="flex relative gap-5 justify-between px-9 bg-white border border-solid border-zinc-200 max-md:px-5">
+                      <button aria-label="Decrease quantity" class="shrink-0 w-px h-10 border border-solid bg-zinc-200 border-zinc-200"></button>
+                      <input type="number" id="quantity3" value="1" min="1" class="w-10 text-center" aria-label="Quantity" />
+                      <button aria-label="Increase quantity" class="shrink-0 self-start w-0 h-10 border border-solid bg-zinc-200 border-zinc-200"></button>
+                    </div>
+                  </div>
+                </div>
+                <div class="self-end mt-11 text-lg font-medium leading-6 text-right text-gray-900 max-md:mt-10">158.99$</div>
+              </div>
+            </div>
+          </div>
+          <button aria-label="Remove item" class="shrink-0 self-start w-5 aspect-square">
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b1221f82a2569b7c4b9bca1cbdf3a6bf501044c6368be26e07cbb72d01fedb0f?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Remove" />
+          </button>
+        </section>
+      
+        <div class="flex gap-5 justify-between mt-14 mr-6 max-w-full text-base leading-6 text-gray-900 w-[360px] max-md:mt-10 max-md:mr-2.5">
+          <div class="flex flex-col">
+            <p>Subtotal</p>
+            <p class="mt-7">Shipping Cost (+)</p>
+            <p class="mt-6">Discount (-)</p>
+          </div>
+          <div class="flex flex-col font-medium text-right whitespace-nowrap">
+            <p class="self-start ml-3.5 max-md:ml-2.5">$108</p>
+            <p class="mt-6">$10.85</p>
+            <p class="mt-6">$9.00</p>
+          </div>
+        </div>
+        <hr class="shrink-0 mt-7 max-w-full h-px border border-solid bg-zinc-200 border-zinc-200 w-[420px]" />
+        <div class="flex gap-5 mt-8 mr-6 max-w-full text-base leading-6 text-gray-900 w-[360px] max-md:mr-2.5">
+          <p class="flex-auto">Total Payable</p>
+          <p class="font-medium text-right">$88.15</p>
+        </div>
+        <button class="flex gap-2 justify-center px-9 py-5 mt-4 mr-6 text-lg font-bold leading-5 text-center text-white bg-gray-800 rounded-md max-md:px-5 max-md:mr-2.5">
+          Proceed to Checkout
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/80ac8b1b7a372098dc9820299ecee898970e74b52a993972ce4de3838579e575?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="" class="shrink-0 aspect-square w-[18px]" />
+        </button>
+    </main>
+
     <!-- JavaScript -->
     <!-- JavaScript -->
     <script>
@@ -40,5 +165,4 @@
             });
         });
     </script>
-</body>
-</html>
+{% endblock %}

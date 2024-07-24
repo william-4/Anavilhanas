@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,11 +30,18 @@ DEBUG = True
 # CUSTOM User Model
 AUTH_USER_MODEL = 'shop.customUser'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['3c19-102-219-208-26.ngrok-free.app', '127.0.0.1']
 
+
+# Initialize environment variables
+env = environ.Env()
+environ.Env.read_env()
+
+# Set Django settings module
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', env('DJANGO_SETTINGS_MODULE'))
 
 # Application definition
-
 INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'django.contrib.admin',

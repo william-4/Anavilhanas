@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <main class="flex z-10 justify-center items-center px-16 py-4 w-full bg-white max-md:px-5 max-md:max-w-full">
+    <section class="flex flex-col mb-4 w-full max-w-[1170px] max-md:max-w-full">
+      <h1 class="self-center text-2xl font-semibold text-right text-gray-900 max-md:max-w-full">
+        Order Confirmed! We will be in touch with you shortly
+      </h1>
+      <div class="mt-11 max-md:mt-10 max-md:max-w-full">
+        <div class="flex gap-5 max-md:flex-col">
+          <article class="flex flex-col w-[68%] max-md:ml-0 max-md:w-full">
+            <div class="flex flex-col grow p-10 w-full bg-white rounded-xl border border-solid shadow-lg border-zinc-200 max-md:px-5 max-md:mt-8 max-md:max-w-full">
+              <h2 class="self-start text-2xl font-semibold text-gray-900">Order #15478</h2>
+              <time datetime="2021-03-21T22:34:00" class="self-start mt-1.5 text-base leading-6 text-gray-500">21st Mart 2021 at 10:34 PM</time>
+              <div class="flex gap-5 px-9 py-4 mt-9 w-full text-base font-medium leading-6 text-gray-900 bg-gray-50 rounded-md border border-solid border-zinc-200 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
+                <div class="flex-auto">Product Details</div>
+                <div class="flex gap-5 justify-between whitespace-nowrap">
+                  <div>Quantity</div>
+                  <div>Price</div>
+                </div>
+              </div>
+              <ul class="flex flex-col px-6 pb-6 mt-6 max-md:px-5 max-md:max-w-full">
+                <li class="flex gap-5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
+                  <div class="flex gap-5">
+                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/29f608a59824f19ff896ae47ac03c6f34211e0479037e4424e0c7f2d214d2cb9?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Mist black triblend product image" class="shrink-0 aspect-square w-[60px]" />
+                    <div class="flex flex-col my-auto">
+                      <h3 class="text-base font-medium leading-6 text-gray-900">Mist black triblend</h3>
+                      <div class="flex gap-5 justify-between mt-1.5 text-sm leading-5 text-gray-500">
+                        <span>Color: White</span>
+                        <span>Size: Medium</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex gap-5 justify-between my-auto text-base font-medium leading-6 text-gray-900 whitespace-nowrap">
+                    <span>01</span>
+                    <span class="text-right">$36.00</span>
+                  </div>
+                </li>
+                <li class="flex gap-5 justify-between mt-12 w-full max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
+                  <div class="flex gap-5">
+                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/bd8a8ea1c8dfb084d0ab1185024577a9b22ba8228fe2294a3d3f12c3ef9a1e46?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Awesome pest color t-shirt product image" class="shrink-0 aspect-square w-[60px]" />
+                    <div class="flex flex-col my-auto">
+                      <h3 class="text-base font-medium leading-6 text-gray-900">Awesome pest color t-shirt</h3>
+                      <div class="flex gap-5 justify-between mt-1.5 text-sm leading-5 text-gray-500">
+                        <span>Color: Pest</span>
+                        <span>Size: Large</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex gap-5 justify-between my-auto text-base font-medium leading-6 text-gray-900 whitespace-nowrap">
+                    <span>01</span>
+                    <span class="text-right">$25.00</span>
+                  </div>
+                </li>
+                <li class="flex gap-5 justify-between mt-12 w-full max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
+                  <div class="flex gap-5">
+                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/9a2ab924902a3085d887d9bc867fb2476221f989e2d39617715386bf49212fb0?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Yellow t-shirt product image" class="shrink-0 aspect-square w-[60px]" />
+                    <div class="flex flex-col my-auto">
+                      <h3 class="text-base font-medium leading-6 text-gray-900">Yellow t-shirt</h3>
+                      <div class="flex gap-5 justify-between mt-1.5 text-sm leading-5 text-gray-500">
+                        <span>Color: Yellow</span>
+                        <span>Size: Medium</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex gap-5 justify-between my-auto text-base font-medium leading-6 text-gray-900 whitespace-nowrap">
+                    <span>01</span>
+                    <span class="text-right">$45.00</span>
+                  </div>
+                </li>
+              </ul>
+              <dl class="flex flex-col gap-4 self-end mt-8 mr-6 max-w-full text-base leading-6 text-gray-900 whitespace-nowrap w-[360px] max-md:mr-2.5">
+                <div class="flex justify-between">
+                  <dt>Subtotal</dt>
+                  <dd class="font-medium text-right">$106</dd>
+                </div>
+                <div class="flex justify-between">
+                  <dt>Shipping Cost (+)</dt>
+                  <dd class="font-medium text-right">$10.85</dd>
+                </div>
+                <div class="flex justify-between">
+                  <dt>Discount (-)</dt>
+                  <dd class="font-medium text-right">$9.00</dd>
+                </div>
+                <div class="flex justify-between mt-8">
+                  <dt>Total Payable</dt>
+                  <dd class="font-medium text-right">$107.85</dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+          <aside class="flex flex-col ml-5 w-[32%] max-md:ml-0 max-md:w-full">
+            <div class="flex flex-col max-md:mt-8">
+              <div class="flex flex-col items-start px-1.5 pt-10 pb-1.5 w-full bg-white rounded-xl border border-solid shadow-lg border-zinc-200">
+                <h2 class="ml-9 text-2xl font-semibold text-right text-gray-900 max-md:ml-2.5">Customer</h2>
+                <div class="flex gap-5 mt-8 ml-9 text-base leading-6 max-md:ml-2.5">
+                  <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ab42a10e3a91ffa042cf80b5e16ff73aed63a7825579d4eddce2a97861a1c234?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Customer profile picture" class="shrink-0 w-20 aspect-square" />
+                  <div class="flex flex-col my-auto">
+                    <h3 class="font-semibold text-gray-900">Willium Deno</h3>
+                    <p class="mt-1 text-gray-500">10 Previous Orders</p>
+                  </div>
+                </div>
+                <div class="flex gap-3 mt-8 ml-9 max-md:ml-2.5">
+                  <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/9e7bb43602c39b893204238a300ce76bd61b8cc2171935ac8d2e660c8cebabcf?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="" class="shrink-0 self-start mt-1.5 w-5 aspect-square" />
+                  <div class="flex flex-col">
+                    <h3 class="text-lg font-semibold leading-6 text-gray-900">Shipping Address</h3>
+                    <address class="mt-1.5 text-base leading-6 text-gray-500 not-italic">
+                      New York, USA 2707 Davis<br />Avenue
+                    </address>
+                  </div>
+                </div>
+                <div class="flex gap-3 mt-8 ml-9 max-md:ml-2.5">
+                  <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/9e7bb43602c39b893204238a300ce76bd61b8cc2171935ac8d2e660c8cebabcf?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="" class="shrink-0 self-start mt-1.5 w-5 aspect-square" />
+                  <div class="flex flex-col">
+                    <h3 class="text-lg font-semibold leading-6 text-gray-900">Billing Address</h3>
+                    <address class="mt-1.5 text-base leading-6 text-gray-500 not-italic">
+                      New York, USA 2707 Davis<br />Avenue
+                    </address>
+                  </div>
+                </div>
+                <div class="flex gap-3 mt-8 ml-9 max-md:ml-2.5">
+                  <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ae00b8566c6750599ae0c17b699f6f750489e865762f902bb50033680def9729?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="" class="shrink-0 self-start w-5 aspect-square" />
+                  <div class="flex flex-col">
+                    <h3 class="text-lg font-semibold leading-6 text-gray-900">Email Address</h3>
+                    <p class="mt-1.5 text-base leading-6 text-gray-500">contact@yourmail.com</p>
+                  </div>
+                </div>
+                <button class="self-stretch px-9 py-5 mt-12 text-lg leading-5 text-center bg-white rounded-xl border-2 border-gray-800 border-solid text-slate-500 max-md:px-5 max-md:mt-10">
+                  Edit Details
+                </button>
+              </div>
+              <button class="px-9 py-5 mt-16 text-lg font-bold leading-5 text-center text-white bg-gray-800 rounded-md max-md:px-5 max-md:mt-10">
+                Continue Shopping
+              </button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <section class="flex flex-col items-center px-16 w-full bg-white max-md:px-5 max-md:max-w-full">
+    <div class="flex flex-col mb-2.5 w-full max-w-[1188px] max-md:max-w-full">
+      <h2 class="text-4xl font-bold text-center text-gray-800 leading-[66px] max-md:max-w-full">
+        Recommendations just for you
+      </h2>
+      <div class="mt-10 max-md:pr-5 max-md:max-w-full">
+        <ul class="flex gap-5 max-md:flex-col">
+          <li class="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
+            <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0b962eab7a882f6f4f65854ce1851d9cd57d816f01bbcb28e25e4ff66da8e209?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Man's Black Shirt" class="self-stretch w-full aspect-[0.9]" />
+              <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-900">Man's Black Shirt</h3>
+              <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">$35.00</p>
+            </div>
+          </li>
+          <li class="flex flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
+            <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0b962eab7a882f6f4f65854ce1851d9cd57d816f01bbcb28e25e4ff66da8e209?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Man's Black Shirt" class="self-stretch w-full aspect-[0.9]" />
+              <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-900">Man's Black Shirt</h3>
+              <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">$35.00</p>
+            </div>
+          </li>
+          <li class="flex flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
+            <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0b962eab7a882f6f4f65854ce1851d9cd57d816f01bbcb28e25e4ff66da8e209?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Man's Black Shirt" class="self-stretch w-full aspect-[0.9]" />
+              <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-900">Man's Black Shirt</h3>
+              <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">$35.00</p>
+            </div>
+          </li>
+          <li class="flex flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
+            <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0b962eab7a882f6f4f65854ce1851d9cd57d816f01bbcb28e25e4ff66da8e209?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Man's Black Shirt" class="self-stretch w-full aspect-[0.9]" />
+              <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-900">Man's Black Shirt</h3>
+              <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">$35.00</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    <div class="flex flex-col pt-20 w-full bg-white max-md:max-w-full">
+  </div>
+  </section>
+
+{% endblock %}

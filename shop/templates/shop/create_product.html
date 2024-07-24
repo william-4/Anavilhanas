@@ -1,10 +1,6 @@
-<!-- templates/register.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add product</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     {% if item_exists %}
         <p> Product already exists in the database </p>
     {% endif %}
@@ -16,7 +12,4 @@
         <button type="submit">Submit</button>
     </form>
 
-    <script>
-    </script>
-</body>
-</html>
+{% endblock %}

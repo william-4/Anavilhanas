@@ -1,10 +1,6 @@
-<!-- templates/register.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Register</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <h2>Create your account</h2>
     <form id="my-form" method="post">
         {% csrf_token %}
@@ -18,5 +14,4 @@
             // document.getElementById('my-form').reset();
         });
     </script>
-</body>
-</html>
+{% endblock %}

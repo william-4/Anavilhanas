@@ -1,15 +1,5 @@
 /* styles.css */
-.product-images {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
 
-.product-images img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px;
-}
+.gray-gradient {
+    background: linear-gradient(to right, #314155, #9ca3b9);
+  }

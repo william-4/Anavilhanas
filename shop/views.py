@@ -14,6 +14,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import uuid
 
 
 from .forms import customUserCreationForm, customUserEditForm, combinedForm, categoriesForm, addressesForm
@@ -126,23 +127,33 @@ def edit_profile(request):
         }
         return render(request, 'shop/edit_profile.html', context)
 
-@login_required(login_url = 'shop:login')
 def profile(request):
-    form1 = customUserCreationForm(instance=request.user)
-    try:
-        address = get_object_or_404(Addresses, user=request.user)
-    except:
-        address = None
-    if request.method == 'GET':
-        if address:
-            form2 = addressesForm(instance=address)
-        else:
-            form2 = addressesForm()
-        context = {
-            "form1": form1,
-            "form2": form2,
-        }
-        return render(request, 'shop/profile.html', context=context)
+    if request.user.is_authenticated:
+        user = request.user.username
+        user_name = user.rsplit('-',1)
+        print(user)
+        if user_name[1] == "User":
+            context = {
+                    "message":  "You are not authorized to view this page"
+                }
+            return render(request, 'shop/home.html', context=context)
+        form1 = customUserCreationForm(instance=request.user)
+        try:
+            address = get_object_or_404(Addresses, user=request.user)
+        except:
+            address = None
+        if request.method == 'GET':
+            if address:
+                form2 = addressesForm(instance=address)
+            else:
+                form2 = addressesForm()
+            context = {
+                "form1": form1,
+                "form2": form2,
+            }
+            return render(request, 'shop/profile.html', context=context)
+    return render(request, 'shop/home.html')
+    
 
 
 
@@ -169,6 +180,9 @@ def home(request):
     return render(request, 'shop/home.html')
 
 
+def affiliate(request):
+    return render(request, 'shop/affiliate.html')
+
 # Home Page
 def popular(request):
     """Returns a json of the popular products from the database"""
@@ -191,11 +205,14 @@ def sort(request, parameter):
     """
 
 
-def products(request):
+def products(request, category_id=None):
     """Returns a json of all categories from the database"""
     categories = Categories.objects.all()
     # categories_list = list(categories)
-    category_products = Products.objects.filter(category=categories[0])
+    if category_id is not None:
+        category_products = Products.objects.filter(category_id=category_id)
+    else:
+        category_products = Products.objects.filter(category=categories[0])
     paginator = Paginator(category_products, 9)
     page = request.GET.get('page')
     try:
@@ -204,9 +221,27 @@ def products(request):
         products = paginator.page(1)
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
+    first_product = products[0] if len(products) > 0 else None
+    second_product = products[1] if len(products) > 1 else None
+    third_product = products[2] if len(products) > 2 else None
+    fourth_product = products[3] if len(products) > 3 else None
+    fifth_product = products[4] if len(products) > 4 else None
+    sixth_product = products[5] if len(products) > 5 else None
+    seventh_product = products[6] if len(products) > 6 else None
+    eighth_product = products[7] if len(products) > 7 else None
+    ninth_product = products[8] if len(products) > 8 else None
     context = {
         "categories": categories,
         "products": products,
+        "first_product": first_product,
+        "second_product": second_product,
+        "third_product": third_product,
+        "fourth_product": fourth_product,
+        "fifth_product": fifth_product,
+        "sixth_product": sixth_product,
+        "seventh_product": seventh_product,
+        "eighth_product": eighth_product,
+        "ninth_product": ninth_product
     }
     return render(request, 'shop/products.html', context=context)
 
@@ -255,8 +290,8 @@ def product(request, product_id):
         session_id = request.session.session_key
         password = session_id
         # Create a new user with a random password and save it to the database.
-        data = "Billions"
-        username = f"User-{next(gen)}"
+        data = str(uuid.uuid4())
+        username = f"User-{data}"
         user = customUser.objects.create_user(username=username, password=data, first_name=data, last_name=data, phone_number=data, email=data, city=data)
         user = authenticate(username=username, password=data)
         if user == None:
@@ -335,8 +370,7 @@ def subtract_quantity(request, product_id):
     return JsonResponse({'status': 'fail', 'message': 'Invalid request method'}, status=400)
 
 
-# Cart Page - Create a temporary user 
-def cart_detail(request):
+def cart(request):
     """Returns json of the items in the cart for the specific user"""
     if request.user.is_authenticated:
         try:
@@ -438,8 +472,12 @@ def place_order(request, user_id, cart_id):
 
 
 # Order Confirmation Page
-def order_confirmation_details(request, order_id):
+def order_confirmation(request, order_id=None):
     """Returns order details and profile details"""
+    context = {
+        "order_id": order_id,
+    }
+    return render(request, "shop/order_confirmation.html", context)
 
 def continue_shopping(request):
     """Takes user to categories page"""

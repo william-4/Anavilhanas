@@ -1,79 +1,72 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ product.name }}</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-    <p>Name: {{ product.name }}</p>
-    <p>Category: {{ product.category.name }}</p>
-    <p>Price: {{ product.price }}</p>
-    <p>Quantity: {{ product.quantity }}</p>
-    <p>Description: {{ product.description }}</p>
-    <p>Features: {{ product.features }}</p>
-    <div class="product-images">
-        {% for image in product.images.all %}
-            {% if image.image1 %}
-                <img src="{{ image.image1.url }}" alt="{{ product.name }} Image 1">
-            {% endif %}
-            {% if image.image2 %}
-                <img src="{{ image.image2.url }}" alt="{{ product.name }} Image 2">
-            {% endif %}
-            {% if image.image3 %}
-                <img src="{{ image.image3.url }}" alt="{{ product.name }} Image 3">
-            {% endif %}
-            {% if image.image4 %}
-                <img src="{{ image.image4.url }}" alt="{{ product.name }} Image 4">
-            {% endif %}
-            {% if image.image5 %}
-                <img src="{{ image.image5.url }}" alt="{{ product.name }} Image 5">
-            {% endif %}
-        {% endfor %}
-    </div>
-    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-    <button id="add-to-cart" data-product-id="{{ product.id }}">Add to Cart</button>
-    <br>
-    <br>
-    <br>
-    <h1>You may also like</h1>
-    {% if other_products %}
-    <ul>
-        {% for product in other_products %}
-            <li>{{ product.name }}</li>
-            <li>{{ product.category.name }}</li>
-            <li>{{ product.price }}</li>
-            <li>{{ product.quantity }}</li>
-            <li>{{ product.description }}</li>
-            <li>{{ product.features }}</li>
-            <div class="product-images">
+{% extends "base.html" %}
+{% block content %}
+    <main class="container mx-auto flex z-10 flex-col justify-center px-16 py-0 w-full bg-white max-md:px-5 max-md:max-w-full">
+        <section class="mt-10 mb-4 max-md:mr-2 max-md:max-w-full">
+            <div class="flex gap-5 max-md:flex-col">
                 {% for image in product.images.all %}
-                    {% if image.image1 %}
-                        <img src="{{ image.image1.url }}" alt="{{ product.name }} Image 1">
-                    {% endif %}
-                    {% if image.image2 %}
-                        <img src="{{ image.image2.url }}" alt="{{ product.name }} Image 2">
-                    {% endif %}
-                    {% if image.image3 %}
-                        <img src="{{ image.image3.url }}" alt="{{ product.name }} Image 3">
-                    {% endif %}
-                    {% if image.image4 %}
-                        <img src="{{ image.image4.url }}" alt="{{ product.name }} Image 4">
-                    {% endif %}
-                    {% if image.image5 %}
-                        <img src="{{ image.image5.url }}" alt="{{ product.name }} Image 5">
-                    {% endif %}
+                    <div class="flex flex-col w-[57%] max-md:ml-0 max-md:w-full">
+                        <div class="flex flex-col grow max-md:mt-10 max-md:max-w-full">
+                            <img loading="lazy" src="{{ image.image1.url }}" alt="Main product image" class="w-full aspect-w-4 aspect-h-3 max-md:max-w-full" />
+                            <div class="mt-8 max-md:pr-5 max-md:max-w-full">
+                                <div class="flex gap-5 max-md:flex-col">
+                                    <img loading="lazy" src="{{ image.image1.url }}" alt="Product image 1" class="shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
+                                    <img loading="lazy" src="{{ image.image2.url }}" alt="Product image 2" class="shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
+                                    <img loading="lazy" src="{{ image.image3.url }}" alt="Product image 3" class="shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="flex flex-col ml-5 w-[43%] max-md:ml-0 max-md:w-full">
+                    <div class="flex flex-col max-md:mt-10 max-md:max-w-full">
+                        <h1 class="text-4xl font-bold text-gray-900 max-md:max-w-full">{{ product.name }}</h1>
+                        <div class="flex gap-2 self-start mt-6 text-base font-medium leading-6 text-gray-900">
+                            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/38627b73c4ddeaf921c4003c21fcd6c5dba5e9a65319d42ce6baaa33b6bc706b?apiKey=45464f6dd8d54e08a5464968c5a9f90c&" alt="" class="shrink-0 my-auto w-5 aspect-square" />
+                            <p>In Stock</p>
+                        </div>
+                        <p class="mt-6 text-base leading-6 text-gray-500 max-md:max-w-full">{{ product.description }}</p>
+                        <div class="flex gap-5 justify-between pr-14 mt-8 max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
+                            <div class="flex flex-col">
+                                <label for="quantity" class="text-base font-medium leading-6 text-gray-900">Quantity</label>
+                                <div class="flex overflow-hidden relative flex-col justify-center self-center mt-3">
+                                    <input class="border border-solid border-zinc-400" type="number" id="quantity" value="1" min="1" class="text-center" aria-label="Quantity" />
+                                </div>
+                            </div>
+                            <div class="flex flex-col self-start text-right">
+                                <p class="self-end text-3xl font-semibold leading-10 text-gray-900">KES {{ product.price }}</p>
+                                <p class="text-base leading-6 text-gray-500">+16% VAT Added</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                        <button id="add-to-cart" data-product-id="{{ product.id }}" class="px-9 py-5 mt-10 text-lg font-bold leading-5 text-center text-white bg-gray-800 rounded-md max-md:px-5 max-md:max-w-full">Add to Cart</button>
+                        <h2 class="mt-10 text-2xl font-semibold text-gray-900 max-md:max-w-full">Product Features</h2>
+                        <p class="mt-10 text-base leading-6 text-gray-500 max-md:max-w-full">{{ product.features }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <section class="flex flex-col px-14 pt-12 pb-10 w-full bg-white max-md:px-5 max-md:max-w-full">
+        <h2 class="self-start text-4xl font-bold text-center text-gray-800 leading-[66px] max-md:max-w-full">You may also like</h2>
+        <div class="justify-center self-center mt-10 mb-5 w-full max-w-[1158px] max-md:max-w-full">
+            <div class="flex gap-5 max-md:flex-col">
+                {% for product in other_products %}
+                    <article class="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
+                        <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+                            <a href="{% url 'shop:product' product.id %}">
+                                {% for image in product.images.all %}
+                                    <img loading="lazy" src="{{ image.image1.url }}" alt="{{product.name}}" class="self-stretch w-full aspect-[0.9]" />
+                                {% endfor %}
+                                <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">{{ product.name }}</h3>
+                                <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES {{ product.price }}</p>
+                            </a>
+                        </div>
+                    </article>
                 {% endfor %}
             </div>
-            <li><a href="{% url 'shop:product' product.id %}"><span>View Product</span></a></li>
-        {% endfor %}
-    </ul>
-    {% else %}
-        <p>No products currently available.</p>
-    {% endif %}
+        </div>
+    </section>
+</main>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
     $(document).ready(function() {
         var inCart = "{{ in_cart }}";
@@ -94,10 +87,12 @@
                     csrfmiddlewaretoken: csrfToken
                 },
                 success: function(response) {
-                    // Handle successful addition (e.g., update button text)
+                    // Handle successful addition (e.g., update button text) --- Should also call backend and add to cart with the quantity specified
                     alert('Item added to cart successfully');
                     $('#add-to-cart').text('Added to Cart');
                     $('#add-to-cart').prop('disabled', true);
+                    $('#add-to-cart').removeClass('bg-gray-800');
+                    $('#add-to-cart').addClass('bg-gray-500');
                 },
                 error: function(response) {
                     // Handle error (e.g., display an error message)
@@ -107,6 +102,4 @@
         });
     });
     </script>
-
-</body>
-</html>
+{% endblock %}
