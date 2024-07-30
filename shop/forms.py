@@ -16,7 +16,7 @@ class customUserEditForm(UserCreationForm):
         model = customUser
         fields = ('first_name', 'last_name', 'email', 'city', 'phone_number', 'date_of_birth')
         widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'placeholder': 'YYYY-MM-DD'}),
         }
 
 class categoriesForm(forms.ModelForm):
@@ -27,7 +27,7 @@ class categoriesForm(forms.ModelForm):
 class addressesForm(forms.ModelForm):
     class Meta:
         model = Addresses
-        fields = ['city', 'town', 'location', 'major_road', 'description']
+        fields = ['city', 'town', 'estate', 'major_road', 'description']
 
 class combinedForm(forms.Form):
     name = forms.CharField(max_length=100)

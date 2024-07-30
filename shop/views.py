@@ -69,90 +69,40 @@ def create_product(request):
     return render(request, 'shop/create_product.html', {'form': form})
 
 
-def create_category(request):
-    if request.method == "POST":
-        form = categoriesForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data.get('name')
-            item_exists = False
-            if Categories.objects.filter(name=name).exists():
-                item_exists = True
-                count = Categories.objects.count()
-                context = {
-                    "form": form,
-                    "count": count,
-                    "item_exists": item_exists,
-                }
-                return render(request, 'shop/create_category.html', context)
-            else:
-                category = form.save()
-                count = Categories.objects.count()
-                context = {
-                    "form": form,
-                    "count": count,
-                }
-                return render(request, 'shop/create_category.html', context)
-    else:
-        form = categoriesForm()
-        count = Categories.objects.count()
-        context = {
-            "form": form,
-            "count": count,
-        }
-    return render(request, 'shop/create_category.html', context)
-
-
-def edit_profile(request):
-    first_time = False
-    try:
-        address = get_object_or_404(Addresses, user=request.user)
-    except:
-        first_time = True
-    if first_time and request.method == "POST":
-        form = addressesForm(request.POST)
-    else:
-        form = addressesForm(request.POST, instance=address)
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.user = request.user
-        instance.save()
-        return redirect('shop:profile')
-    if request.method == 'GET':
-        if first_time:
-            form = addressesForm()
-        else:
-            form = addressesForm(instance=address)
-        context = {
-            "form": form,
-        }
-        return render(request, 'shop/edit_profile.html', context)
-
 def profile(request):
     if request.user.is_authenticated:
-        user = request.user.username
-        user_name = user.rsplit('-',1)
-        print(user)
-        if user_name[1] == "User":
-            context = {
-                    "message":  "You are not authorized to view this page"
-                }
-            return render(request, 'shop/home.html', context=context)
-        form1 = customUserCreationForm(instance=request.user)
+        profile = customUser.objects.get(username=request.user.username)
         try:
-            address = get_object_or_404(Addresses, user=request.user)
-        except:
+            address, created = Addresses.objects.get_or_create(user=request.user)
+        except Addresses.DoesNotExist:
             address = None
-        if request.method == 'GET':
-            if address:
-                form2 = addressesForm(instance=address)
-            else:
-                form2 = addressesForm()
-            context = {
-                "form1": form1,
-                "form2": form2,
-            }
-            return render(request, 'shop/profile.html', context=context)
-    return render(request, 'shop/home.html')
+
+        if request.method == 'POST':
+            form1 = customUserCreationForm(request.POST, instance=profile)
+            form2 = addressesForm(request.POST, instance=address)
+
+            if form1.is_valid():
+                # Manually set fields to update specific attributes
+                profile.first_name = form1.cleaned_data.get('first_name')
+                profile.phone_number = form1.cleaned_data.get('phone_number')
+                profile.email = form1.cleaned_data.get('email')
+                profile.date_of_birth = form1.cleaned_data.get('date_of_birth')
+                profile.save()
+
+            if form2.is_valid():
+                address.city = form2.cleaned_data.get('city')
+                address.town = form2.cleaned_data.get('town')
+                address.major_road = form2.cleaned_data.get('major_road')
+                address.estate = form2.cleaned_data.get('estate')
+                address.description = form2.cleaned_data.get('description')
+                address.save()
+                return redirect('shop:profile')  # Redirect after saving
+        else:
+            form1 = customUserCreationForm(instance=profile)
+            form2 = addressesForm(instance=address)
+        
+        return render(request, 'shop/profile.html', {'form1': form1, 'form2': form2})
+    return render(request, 'shop/home.html') # Should redirect to the register page
     
 
 

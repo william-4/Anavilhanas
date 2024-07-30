@@ -5,7 +5,7 @@
         <div class="flex gap-5 max-md:flex-col max-md:gap-0">
             <aside class="flex flex-col w-[28%] max-md:ml-0 max-md:w-full">
                 <div class="flex flex-col items-start pt-4 pb-8 mx-auto w-full text-base font-medium leading-6 text-gray-900 bg-white rounded-lg border border-solid border-zinc-200 max-md:mt-10">
-                    <h2 class="ml-8 text-lg font-semibold leading-6 max-md:ml-2.5">Categories</h2>
+                    <h2 class="ml-8 text-lg font-semibold leading-6 max-md:ml-2.5">Browse by category</h2>
                     <hr class="shrink-0 self-stretch mt-3 h-px border border-solid bg-zinc-200 border-zinc-200" />
                     <ul class="w-full list-none">
                     {% for category in categories %}
@@ -25,11 +25,11 @@
                         {% if first_product %}
                             {% for image in first_product.images.all %}
                                 <article class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full rounded-lg">
-                                    <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+                                    <div class="flex flex-col grow justify-center max-md:mt-7">
                                         <a href="{% url 'shop:product' first_product.id %}">
                                             <img src="{{ image.image1.url }}" alt="{{ first_product.name }} Image 1" class="rounded-lg">
-                                            <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">{{ first_product.name }}</h3>
-                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">{{ first_product.price }}</p>
+                                            <h3 class="mt-3 text-xl font-semibold leading-7 text-gray-800">{{ first_product.name }}</h3>
+                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES {{ first_product.price }}</p>
                                         </a>
                                     </div>
                                 </article>
@@ -38,11 +38,11 @@
                         {% if second_product %}
                             {% for image in second_product.images.all %}
                                 <article class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full rounded-lg">
-                                    <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+                                    <div class="flex flex-col grow justify-center max-md:mt-7">
                                         <a href="{% url 'shop:product' second_product.id %}">
                                             <img src="{{ image.image1.url }}" alt="{{ second_product.name }} Image 1" class="rounded-lg">
-                                            <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">{{ second_product.name }}</h3>
-                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">{{ second_product.price }}</p>
+                                            <h3 class="mt-3 text-xl font-semibold leading-7 text-gray-800">{{ second_product.name }}</h3>
+                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES {{ second_product.price }}</p>
                                         </a>
                                     </div>
                                 </article>
@@ -51,11 +51,11 @@
                         {% if third_product %}
                             {% for image in third_product.images.all %}
                                 <article class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full rounded-lg">
-                                    <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+                                    <div class="flex flex-col grow justify-center max-md:mt-7">
                                         <a href="{% url 'shop:product' third_product.id %}">
                                             <img src="{{ image.image1.url }}" alt="{{ third_product.name }} Image 1" class="rounded-lg">
-                                            <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">{{ third_product.name }}</h3>
-                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">{{ third_product.price }}</p>
+                                            <h3 class="mt-3 text-xl font-semibold leading-7 text-gray-800">{{ third_product.name }}</h3>
+                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES {{ third_product.price }}</p>
                                         </a>
                                     </div>
                                 </article>
@@ -68,11 +68,11 @@
                         {% if fourth_product %}
                             {% for image in fourth_product.images.all %}
                                 <article class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full rounded-lg">
-                                    <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+                                    <div class="flex flex-col grow justify-center max-md:mt-7">
                                         <a href="{% url 'shop:product' fourth_product.id %}">
                                             <img src="{{ image.image1.url }}" alt="{{ fourth_product.name }} Image 1" class="rounded-lg">
-                                            <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">{{ fourth_product.name }}</h3>
-                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">{{ fourth_product.price }}</p>
+                                            <h3 class="mt-3 text-xl font-semibold leading-7 text-gray-800">{{ fourth_product.name }}</h3>
+                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES {{ fourth_product.price }}</p>
                                         </a>
                                     </div>
                                 </article>
@@ -81,11 +81,11 @@
                         {% if fifth_product %}
                             {% for image in fifth_product.images.all %}
                                 <article class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full rounded-lg">
-                                    <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+                                    <div class="flex flex-col grow justify-center max-md:mt-7">
                                         <a href="{% url 'shop:product' fifth_product.id %}">
                                             <img src="{{ image.image1.url }}" alt="{{ fifth_product.name }} Image 1" class="rounded-lg">
-                                            <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">{{ fifth_product.name }}</h3>
-                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">{{ fifth_product.price }}</p>
+                                            <h3 class="mt-3 text-xl font-semibold leading-7 text-gray-800">{{ fifth_product.name }}</h3>
+                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES {{ fifth_product.price }}</p>
                                         </a>
                                     </div>
                                 </article>
@@ -94,11 +94,11 @@
                         {% if sixth_product %}
                             {% for image in sixth_product.images.all %}
                                 <article class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
-                                    <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+                                    <div class="flex flex-col grow justify-center max-md:mt-7">
                                         <a href="{% url 'shop:product' sixth_product.id %}">
                                             <img src="{{ image.image1.url }}" alt="{{ sixth_product.name }} Image 1" class="rounded-lg">
-                                            <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">{{ sixth_product.name }}</h3>
-                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">{{ sixth_product.price }}</p>
+                                            <h3 class="mt-3 text-xl font-semibold leading-7 text-gray-800">{{ sixth_product.name }}</h3>
+                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES {{ sixth_product.price }}</p>
                                         </a>
                                     </div>
                                 </article>
@@ -111,11 +111,11 @@
                         {% if seventh_product %}
                             {% for image in seventh_product.images.all %}
                                 <article class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
-                                    <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+                                    <div class="flex flex-col grow justify-center max-md:mt-7">
                                         <a href="{% url 'shop:product' seventh_product.id %}">
-                                            <img src="{{ image.image1.url }}" alt="{{ seventh_product.name }} Image 1 class="rounded-lg"">
-                                            <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">{{ seventh_product.name }}</h3>
-                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">{{ seventh_product.price }}</p>
+                                            <img src="{{ image.image1.url }}" alt="{{ seventh_product.name }} Image 1" class="rounded-lg">
+                                            <h3 class="mt-3 text-xl font-semibold leading-7 text-gray-800">{{ seventh_product.name }}</h3>
+                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES {{ seventh_product.price }}</p>
                                         </a>
                                     </div>
                                 </article>
@@ -124,11 +124,11 @@
                         {% if eighth_product %}
                             {% for image in eighth_product.images.all %}
                                 <article class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
-                                    <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+                                    <div class="flex flex-col grow justify-center max-md:mt-7">
                                         <a href="{% url 'shop:product' eighth_product.id %}">
                                             <img src="{{ image.image1.url }}" alt="{{ eighth_product.name }} Image 1" class="rounded-lg">
-                                            <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">{{ eighth_product.name }}</h3>
-                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">{{ eighth_product.price }}</p>
+                                            <h3 class="mt-3 text-xl font-semibold leading-7 text-gray-800">{{ eighth_product.name }}</h3>
+                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES {{ eighth_product.price }}</p>
                                         </a>
                                     </div>
                             </article>
@@ -137,11 +137,11 @@
                         {% if ninth_product %}
                             {% for image in ninth_product.images.all %}
                                 <article class="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
-                                    <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
+                                    <div class="flex flex-col grow justify-center max-md:mt-7">
                                         <a href="{% url 'shop:product' ninth_product.id %}">
                                             <img src="{{ image.image1.url }}" alt="{{ ninth_product.name }} Image 1" class="rounded-lg">
-                                            <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">{{ ninth_product.name }}</h3>
-                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">{{ ninth_product.price }}</p>
+                                            <h3 class="mt-3 text-xl font-semibold leading-7 text-gray-800">{{ ninth_product.name }}</h3>
+                                            <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES {{ ninth_product.price }}</p>
                                         </a>
                                     </div>
                                 </article>

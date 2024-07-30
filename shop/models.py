@@ -24,8 +24,8 @@ class Addresses(models.Model):
     user = models.ForeignKey('shop.customUser', on_delete=models.CASCADE)
     city = models.CharField(max_length=100)
     town = models.CharField(max_length=100)
-    location = models.CharField(max_length=100)
     major_road = models.CharField(max_length=100)
+    estate = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -55,7 +55,7 @@ class Products(models.Model):
 
 
 class Images(models.Model):
-    product = models.ForeignKey(Products, related_name='images', on_delete=models.PROTECT)
+    product = models.OneToOneField(Products, related_name='images', on_delete=models.PROTECT)
     image1 = models.ImageField(upload_to='products/images/')
     image2 = models.ImageField(upload_to='products/images/', blank=True, null=True)
     image3 = models.ImageField(upload_to='products/images/', blank=True, null=True)

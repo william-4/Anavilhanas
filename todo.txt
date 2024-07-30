@@ -1,0 +1,23 @@
+Meeting 1: 
+1. limited stock and a sellout feature
+2. affiliate page...score card
+3. Links: scorecard, Ikigai entrepreneurship, Mbegu kids startup program
+
+
+To clarify:
+1. Information to be collected about a product
+2. What type of items to start with. The website will have a lot of changes as it grows and
+    as we establish our market fit.
+3. Pages for our business partners to manage the products on their shops. Inspiration from etsy squares
+4. Pages for affiliates to see their sales performance. More of a dashboard. Inspiration from etsy circles
+
+To do:
+1. Filter and sort by buttons above the products. Inspiration from etsy
+2. Helper functions: 
+    - function that retrieves the number of items in the database
+    - function that gets the number of items in the cart of a specific user
+    - function that calculates the total price to be charged. shipping can be constant initially.
+    - function that handles payment and verification.
+    - function that sends an email with the order
+3. Newsletter to periodic catalogue. Optional create account to edit shipping information.
+4. Product Details: Name, price, image(min. of 1), 
