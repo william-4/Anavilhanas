@@ -3,47 +3,52 @@
 {% block content %}          
 <main class="container mx-auto items-end self-center px-5 mt-10 w-full max-w-[1208px] max-md:mt-10 max-md:max-w-full">
     <h1 class="text-4xl mb-5 font-bold text-gray-900 max-md:max-w-full">Your Shopping Bag</h1>
-	<div class="overflow-auto max-h-[32rem]">
-		{% for item in cart_items %}
-			<section class="w-full flex justify-between px-6 py-3 mt-5 bg-white shadow-sm max-md:flex-wrap max-md:px-5">
-				<div class="flex gap-5 justify-between self-end pr-2 mt-1 max-md:flex-wrap">
-					<img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/6d3f0d98367568f8fb9162c327e4ed563dedb37af38ad2caedb05bd2ed0c5af9?apiKey=45464f6dd8d54e08a5464968c5a9f90c&&apiKey=45464f6dd8d54e08a5464968c5a9f90c" alt="Modern Lounge Chair" class="shrink-0 max-w-full aspect-square h-[100px]" />
-					<div class="flex gap-5 justify-between my-auto max-md:flex-wrap max-md:max-w-full">
-						<div class="flex flex-col px-px text-sm text-gray-500">
-							<h2 class="text-2xl font-semibold text-gray-900">{{ item.product.name }}</h2>
-							<p class="mt-2 text-base leading-6">{{ item.product.description }}</p>
-							<div class="flex gap-2.5 justify-between self-start py-2 mt-1.5 text-center bg-white leading-[57%]">
-								<p class="mt-2 text-base leading-6">Quantity:</p>
-								<button onclick="changeQuantity(event, '{{ item.id }}')" class="bg-red-400 text-white px-4 py-2 rounded-md hover:bg-red-600">-</button>
-								<p class="quantity text-xl font-bold" data-item-id="{{ item.id }}">{{ item.quantity }}</p>
-								<button onclick="changeQuantity(event, '{{ item.id }}')" class="bg-green-400 text-white px-4 py-2 rounded-md hover:bg-green-600">+</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="flex flex-col justify-between max-md:mt-10">
-					<button aria-label="Remove item" class="px-3 py- text-sm font-medium text-black rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2">Remove</button>
-					<div data-item-id="{{ item.id }}" class="total text-lg font-medium leading-6 text-right text-gray-900">KES {{ item.product.price }}</div>
-				</div>
-			</section>
-		{% endfor %}
-	</div>
-	
-
+    <div class="overflow-auto max-h-[32rem]" id="cart-items-container">
+        {% for item_with_total in cart_items_with_totals %}
+            {% with item=item_with_total.item %}
+            <section class="w-full flex justify-between px-6 py-3 mt-5 bg-white shadow-sm max-md:flex-wrap max-md:px-5" data-product-id="{{ item.product.id }}">
+                <a href="{% url 'shop:product' item.product.id %}">
+                    <div class="flex gap-5 justify-between self-end pr-2 mt-1 max-md:flex-wrap">
+                        <img loading="lazy" src="{{ item.product.images.image1.url }}" alt="Product image 1" class="shrink-0 max-w-full aspect-square h-[120px]" />
+                        <div class="flex gap-5 justify-between my-auto max-md:flex-wrap max-md:max-w-full">
+                            <div class="flex flex-col px-px text-sm text-gray-500">
+                                <h2 class="text-2xl font-semibold text-gray-900">{{ item.product.name }}</h2>
+                                <p class="mt-2 text-base leading-6">{{ item.product.description }}</p>
+                                <div class="flex gap-2.5 justify-between self-start py-2 mt-1.5 text-center bg-white leading-[57%]">
+                                    <p class="mt-2 text-base leading-6">Quantity: 
+                                        <span class="quantity" data-item-id="{{ item.id }}" data-price="{{ item.product.price }}" data-quantity="{{ item.quantity }}">{{ item.quantity }}</span> 
+                                        x 
+                                        <span class="price">{{ item.product.price }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div class="flex flex-col justify-between max-md:mt-10">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                    <button aria-label="Remove item" class="remove-item px-3 py-2 text-sm font-medium text-black rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-2">Remove</button>
+                    <div class="total text-lg font-medium leading-6 text-right text-gray-900">KES {{ item_with_total.total_price }}</div>
+                </div>
+            </section>
+            {% endwith %}
+        {% endfor %}
+    </div>
+    
     <div class="flex gap-5 justify-between mt-14 mr-6 ml-auto max-w-full text-base leading-6 text-gray-900 w-[360px] max-md:mt-10 max-md:mr-2.5">
         <div class="flex flex-col">
             <p>Subtotal</p>
             <p class="mt-7">Shipping Cost (+)</p>
         </div>
         <div class="flex flex-col font-medium text-right whitespace-nowrap">
-            <p class="self-start ml-3.5 max-md:ml-2.5">KES 108</p>
-            <p class="mt-6">KES 10.85</p>
+            <p id="subtotal" class="self-start ml-3.5 max-md:ml-2.5">KES 0</p>
+            <p id="shipping-cost" class="mt-6">KES 500</p>
         </div>
     </div>
     <hr class="shrink-0 mt-7 ml-auto max-w-full h-px border border-solid bg-zinc-200 border-zinc-200 w-[420px]" />
     <div class="flex gap-5 mt-8 mr-6 ml-auto max-w-full text-base leading-6 text-gray-900 w-[360px] max-md:mr-2.5">
         <p class="flex-auto">Total Payable</p>
-        <p class="font-medium text-right"> KES 118.85</p>
+        <p id="total" class="font-medium text-right">KES 0</p>
     </div>
     <div class="flex gap-5 mt-8 mr-6 ml-auto max-w-full text-base leading-6 text-gray-900 w-[360px] max-md:mr-2.5">
         <a href="{% url 'shop:checkout' %}" class="w-full">
@@ -55,19 +60,54 @@
     </div>
 </main>
 
-<!-- JavaScript -->
 <script>
-    function changeQuantity(event, itemId) {
-        const quantityElement = document.querySelector(`.quantity[data-item-id="${itemId}"]`);
-        const button = event.target;
-        let count = parseInt(quantityElement.innerText);
+document.addEventListener("DOMContentLoaded", function() {
+    function updateCartTotals() {
+        let subtotal = 0;
+        document.querySelectorAll('.quantity').forEach(function(quantityElement) {
+            const price = parseFloat(quantityElement.dataset.price);
+            const quantity = parseInt(quantityElement.dataset.quantity);
+            subtotal += price * quantity;
+        });
 
-        if (button.innerText === '+') {
-            quantityElement.innerText = count + 1;
+        const shippingCost = 500;  // Assuming a fixed shipping cost
+        const total = subtotal + shippingCost;
 
-        } else if (button.innerText === '-' && count > 1) {
-            quantityElement.innerText = count - 1;
-        }
+        document.getElementById('subtotal').innerText = `KES ${subtotal.toFixed(2)}`;
+        document.getElementById('total').innerText = `KES ${total.toFixed(2)}`;
     }
+
+    $('.remove-item').click(function() {
+        let $item = $('.remove-item');
+        let csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+        let productId = $(this).closest('section').data('product-id');
+        // Make the AJAX request to remove the item
+        $.ajax({
+            url: `/cart/remove/${productId}/`, // Replace with your server endpoint
+            method: 'POST',
+            data: {
+                product_id: productId,
+                csrfmiddlewaretoken: csrfToken // Ensure CSRF token if needed
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    window.location.reload();                    
+                    // Update cart totals
+                    updateCartTotals();
+                } else {
+                    window.location.reload();
+                    updateCartTotals();
+                }
+            },
+            error: function(error) {
+                // Handle any errors that occurred during the request
+                console.error('Error:', error);
+
+            }
+        });
+    })
+    updateCartTotals();
+});
 </script>
+
 {% endblock %}

@@ -19,3 +19,4 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Products, ProductAdmin)
 admin.site.register(Categories)
 admin.site.register(customUser)
+admin.site.register(Images)

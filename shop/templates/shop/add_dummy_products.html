@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Create your account</h2>
+    <form id="my-form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('my-form').addEventListener('submit', function(event) {        
+            // Clear the form fields
+            // document.getElementById('my-form').reset();
+        });
+    </script>
+{% endblock %}

@@ -3,20 +3,18 @@
     <main class="container mx-auto flex z-10 flex-col justify-center px-16 py-0 w-full bg-white max-md:px-5 max-md:max-w-full">
         <section class="mt-10 mb-4 max-md:mr-2 max-md:max-w-full">
             <div class="flex gap-5 max-md:flex-col">
-                {% for image in product.images.all %}
                     <div class="flex flex-col w-[57%] max-md:ml-0 max-md:w-full">
                         <div class="flex flex-col grow max-md:mt-10 max-md:max-w-full">
-                            <img loading="lazy" src="{{ image.image1.url }}" alt="Main product image" class="w-full aspect-w-4 aspect-h-3 max-md:max-w-full" />
+                            <img loading="lazy" src="{{ product.images.image1.url }}" alt="Main product image" class="w-full aspect-w-4 aspect-h-3 max-md:max-w-full" />
                             <div class="mt-8 max-md:pr-5 max-md:max-w-full">
                                 <div class="flex gap-5 max-md:flex-col">
-                                    <img loading="lazy" src="{{ image.image1.url }}" alt="Product image 1" class="shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
-                                    <img loading="lazy" src="{{ image.image2.url }}" alt="Product image 2" class="shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
-                                    <img loading="lazy" src="{{ image.image3.url }}" alt="Product image 3" class="shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
+                                    <img loading="lazy" src="{{ product.images.image1.url }}" alt="Product image 1" class="shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
+                                    <img loading="lazy" src="{{ product.images.image2.url }}" alt="Product image 2" class="shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
+                                    <img loading="lazy" src="{{ product.images.image3.url }}" alt="Product image 3" class="shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
                 <div class="flex flex-col ml-5 w-[43%] max-md:ml-0 max-md:w-full">
                     <div class="flex flex-col max-md:mt-10 max-md:max-w-full">
                         <h1 class="text-4xl font-bold text-gray-900 max-md:max-w-full">{{ product.name }}</h1>
@@ -25,11 +23,14 @@
                             <p>In Stock</p>
                         </div>
                         <p class="mt-6 text-base leading-6 text-gray-500 max-md:max-w-full">{{ product.description }}</p>
-                        <div class="flex gap-5 justify-between pr-14 mt-8 max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
+                        <div class="flex gap-5 justify-between mt-8 max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
                             <div class="flex flex-col">
-                                <label for="quantity" class="text-base font-medium leading-6 text-gray-900">Quantity</label>
-                                <div class="flex overflow-hidden relative flex-col justify-center self-center mt-3">
-                                    <input class="border border-solid border-zinc-400" type="number" id="quantity" value="1" min="1" class="text-center" aria-label="Quantity" />
+                                <label for="quantity" class="text-base font-medium leading-6 text-gray-900 mb-4">Quantity</label>
+                                <div class="flex">
+                                    <button onclick="changeQuantity(event, '{{ product.id }}')" class="bg-gray-100 text-gray-900 font-bold px-4 py-2 border-solid rounded-md hover:bg-red-100">-</button>
+                                    <p class="quantity text-xl font-bold py-2 px-4" data-item-id="{{ product.id }}">{{ quantity }}</p>
+                                    <button onclick="changeQuantity(event, '{{ product.id }}')" class="bg-gray-100 text-gray-900 font-bold px-4 py-2 border-solid rounded-md hover:bg-green-100">+</button>
+                            
                                 </div>
                             </div>
                             <div class="flex flex-col self-start text-right">
@@ -38,7 +39,7 @@
                             </div>
                         </div>
                         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-                        <button id="add-to-cart" data-product-id="{{ product.id }}" class="px-9 py-5 mt-10 text-lg font-bold leading-5 text-center text-white bg-gray-800 rounded-md max-md:px-5 max-md:max-w-full">Add to Cart</button>
+                        <button id="add-to-cart" data-product-id="{{ product.id }}" class="px-9 py-5 mt-10 text-lg font-bold leading-5 text-center text-white bg-gray-800 rounded-md max-md:px-5 max-md:max-w-full">Add to cart</button>
                         <h2 class="mt-10 text-2xl font-semibold text-gray-900 max-md:max-w-full">Product Features</h2>
                         <p class="mt-10 text-base leading-6 text-gray-500 max-md:max-w-full">{{ product.features }}</p>
                     </div>
@@ -53,9 +54,7 @@
                     <article class="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
                         <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
                             <a href="{% url 'shop:product' product.id %}">
-                                {% for image in product.images.all %}
-                                    <img loading="lazy" src="{{ image.image1.url }}" alt="{{product.name}}" class="self-stretch w-full aspect-[0.9]" />
-                                {% endfor %}
+                                    <img loading="lazy" src="{{ product.images.image1.url }}" alt="{{product.name}}" class="self-stretch w-full aspect-[0.9]" />
                                 <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">{{ product.name }}</h3>
                                 <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES {{ product.price }}</p>
                             </a>
@@ -71,15 +70,18 @@
     $(document).ready(function() {
         var inCart = "{{ in_cart }}";
         if (inCart === "True") {
-            $('#add-to-cart').text('Added to Cart');
-            $('#add-to-cart').prop('disabled', true);
+            $('#add-to-cart').text('Remove from cart');
+            $('#add-to-cart').removeClass('bg-gray-800');
+            $('#add-to-cart').addClass('bg-gray-500');
         }
         $('#add-to-cart').click(function() {
             let product_id = $(this).data('product-id');
+            let $quantityElement = $('.quantity');
             let csrfToken = $('[name="csrfmiddlewaretoken"]').val();
-            let url = `/product/${product_id}/add_to_cart/`;  // Construct the URL with product ID
-
-            $.ajax({
+            let buttonText = $(this).text()
+            if (buttonText === "Remove from cart") {
+                let url = `/product/${product_id}/remove_from_cart/`;  // Construct the URL with product ID
+                $.ajax({
                 url: url,
                 type: 'POST',
                 data: {
@@ -88,18 +90,79 @@
                 },
                 success: function(response) {
                     // Handle successful addition (e.g., update button text) --- Should also call backend and add to cart with the quantity specified
-                    alert('Item added to cart successfully');
-                    $('#add-to-cart').text('Added to Cart');
-                    $('#add-to-cart').prop('disabled', true);
+                    $quantityElement.text('1');
+                    $('#add-to-cart').text('Add to cart');
+                    $('#add-to-cart').removeClass('bg-gray-500');
+                    $('#add-to-cart').addClass('bg-gray-800');
+                    // alert('Item removed from cart successfully');
+
+                },
+                error: function(response) {
+                    // Handle error (e.g., display an error message)
+                    alert('Failed to remove from cart');
+                }
+            });
+            } else if (buttonText === "Add to cart") {
+                let url = `/product/${product_id}/add_to_cart/`;  // Construct the URL with product ID
+                $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    product_id: product_id,
+                    csrfmiddlewaretoken: csrfToken
+                },
+                success: function(response) {
+                    // Handle successful addition (e.g., update button text) --- Should also call backend and add to cart with the quantity specified
+                    $('#add-to-cart').text('Remove from cart');
                     $('#add-to-cart').removeClass('bg-gray-800');
                     $('#add-to-cart').addClass('bg-gray-500');
+                    // alert('Item added to cart successfully');
                 },
                 error: function(response) {
                     // Handle error (e.g., display an error message)
                     alert('Failed to add to cart');
                 }
             });
+            }
+
+            
         });
     });
+    function changeQuantity(event, productId) {
+        let quantityElement = document.querySelector(`.quantity[data-item-id="${productId}"]`);
+        const button = event.target;
+        let count = parseInt(quantityElement.innerText);
+        let url;
+
+        if (button.innerText === '+') {
+            url = `/add_quantity/${productId}/`;
+
+        } else if (button.innerText === '-' && count > 1) {
+            url = `/subtract_quantity/${productId}/`;
+        }
+
+        if (url) {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ quantity: count })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    quantityElement.innerText = data.new_quantity;
+                    $('#add-to-cart').text('Remove from cart');
+                    $('#add-to-cart').removeClass('bg-gray-800');
+                    $('#add-to-cart').addClass('bg-gray-500');
+                } else {
+                    console.error('Failed to update quantity')
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
     </script>
 {% endblock %}

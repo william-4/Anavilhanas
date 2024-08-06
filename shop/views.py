@@ -23,7 +23,7 @@ from .mpesa import getAccessToken
 from .mpesa import initiate_stk_push, process_stk_callback
 
 
-def create_product(request):
+def add_dummy_products(request):
     if request.method == 'POST':
         form = combinedForm(request.POST, request.FILES)
         if form.is_valid():
@@ -53,7 +53,7 @@ def create_product(request):
                         "count": count,
                         "item_exists": item_exists,
                     }
-                return render(request, 'shop/create_product.html', context)
+                return render(request, 'shop/add_dummy_products.html', context)
             else:
                 item_exists = True
                 count = Products.objects.count()
@@ -63,10 +63,10 @@ def create_product(request):
                         "count": count,
                         "item_exists": item_exists,
                     }
-                return render(request, 'shop/create_product.html', context)
+                return render(request, 'shop/add_dummy_products.html', context)
     else:
         form = combinedForm()
-    return render(request, 'shop/create_product.html', {'form': form})
+    return render(request, 'shop/add_dummy_products.html', {'form': form})
 
 
 def profile(request):
@@ -155,14 +155,17 @@ def sort(request, parameter):
     """
 
 
+from django.shortcuts import render
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .models import Products, Categories
+
 def products(request, category_id=None):
-    """Returns a json of all categories from the database"""
     categories = Categories.objects.all()
-    # categories_list = list(categories)
     if category_id is not None:
-        category_products = Products.objects.filter(category_id=category_id)
+        category_products = Products.objects.filter(category_id=category_id).order_by('created_at')
     else:
-        category_products = Products.objects.filter(category=categories[0])
+        category_products = Products.objects.filter(category=categories[0]).order_by('created_at')
+    
     paginator = Paginator(category_products, 9)
     page = request.GET.get('page')
     try:
@@ -171,29 +174,13 @@ def products(request, category_id=None):
         products = paginator.page(1)
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
-    first_product = products[0] if len(products) > 0 else None
-    second_product = products[1] if len(products) > 1 else None
-    third_product = products[2] if len(products) > 2 else None
-    fourth_product = products[3] if len(products) > 3 else None
-    fifth_product = products[4] if len(products) > 4 else None
-    sixth_product = products[5] if len(products) > 5 else None
-    seventh_product = products[6] if len(products) > 6 else None
-    eighth_product = products[7] if len(products) > 7 else None
-    ninth_product = products[8] if len(products) > 8 else None
+
     context = {
         "categories": categories,
         "products": products,
-        "first_product": first_product,
-        "second_product": second_product,
-        "third_product": third_product,
-        "fourth_product": fourth_product,
-        "fifth_product": fifth_product,
-        "sixth_product": sixth_product,
-        "seventh_product": seventh_product,
-        "eighth_product": eighth_product,
-        "ninth_product": ninth_product
     }
     return render(request, 'shop/products.html', context=context)
+
 
 def category(request, category_id):
     """Returns a json of all categories from the database"""
@@ -215,31 +202,17 @@ def category(request, category_id):
     }
     return render(request, 'shop/products.html', context=context)
 
-# Generator function to generate unique IDs
-def generate_user_id():
-    for i in itertools.count(1):
-        yield i
-
-# Initialize generator outside the view function
-gen = generate_user_id()
-
 # Product Page
 def product(request, product_id):
-    """Returns json of all information about the specific product and other similar products"""
-    user = request.user
-    product = get_object_or_404(Products, pk=product_id)
-    others = Products.objects.all()[:4]
-    other_products = list(others.values())
-    context = {
-        "product": product,
-        "other_products": others,
-        "in_cart": "False"
-    }
-    # Create a new temporary user to keep track of their cart and payment
-    if not request.user.is_authenticated:
-        session_id = request.session.session_key
-        password = session_id
-        # Create a new user with a random password and save it to the database.
+    """
+    Get the current user. If guest user, create a guest account for them for the session.
+    Fetch the product and the other products to be displayed.
+    Fetch cart is user has a cart and fetch the cart_item if it is in the cart.
+    If item exists in the cart, update context objects: quantity and in_cart
+    """
+    if request.user.is_authenticated:
+        user = request.user
+    else:
         data = str(uuid.uuid4())
         username = f"User-{data}"
         user = customUser.objects.create_user(username=username, password=data, first_name=data, last_name=data, phone_number=data, email=data, city=data)
@@ -247,19 +220,27 @@ def product(request, product_id):
         if user == None:
             return HttpResponse("Error in authentication")
         login(request, user)
-    # for my front end button handled using JQuery
-    if request.user.is_authenticated:
-        try:
-            cart = Carts.objects.get(user=user, active=True)
-        except Carts.DoesNotExist:
-            return render(request, "shop/product.html", context)
-        try:
-            item = cartItems.objects.get(cart=cart, product=product)
-        except cartItems.DoesNotExist:
-            return render(request, "shop/product.html", context)
-        context["in_cart"] = "True"
+
+    product = get_object_or_404(Products, pk=product_id)
+    others = Products.objects.all()[:4]
+    context = {
+        "product": product,
+        "other_products": others,
+        "in_cart": "False",
+        "quantity": 1
+    }
+    try:
+        cart = Carts.objects.get(user=user, active=True)
+    except Carts.DoesNotExist:
         return render(request, "shop/product.html", context)
-   
+    try:
+        item = cartItems.objects.get(cart=cart, product=product)
+    except:
+        return render(request, "shop/product.html", context)
+    if item:
+        context["quantity"] = item.quantity
+        context["in_cart"] = "True"
+    return render(request, "shop/product.html", context)
 
 # Create a temporary user on addition of a product to cart or view of cart
 def add_to_cart(request, product_id):
@@ -282,46 +263,39 @@ def add_to_cart(request, product_id):
 
 
 def add_quantity(request, product_id):
-    """Add the quantity of the specific product"""
+    """
+    Fetch the product from the products table.
+    Fetch the cart if it exists and the cart item if already in cart.
+    If item is in cart, increase quantity, else add the item in cart and increase quantity
+    """
     if request.method == 'POST':
-        user = request.user
-
-        try:
-            product = Products.objects.get(id=product_id)
-            # Check if the product is already in the cart
-            cart, cart_created = Carts.objects.get_or_create(user=user, active=True, defaults={'user': user, 'active': True})
-            item, item_created = cartItems.objects.get_or_create(cart=cart, product=product, defaults={'cart': cart, 'product': product, 'quantity': 1})
-            if not item_created:
-                item.quantity += 1
-            item.save()
-            return JsonResponse({'status': 'success'})
-        except Products.DoesNotExist:
-            return JsonResponse({'status': 'fail', 'message': 'Product not found'}, status=404)
-    return JsonResponse({'status': 'fail', 'message': 'Invalid request method'}, status=400)
+        product = Products.objects.get(id=product_id)
+        # Check if the product is already in the cart
+        cart, cart_created = Carts.objects.get_or_create(user=request.user, active=True, defaults={'user': request.user, 'active': True})
+        item, item_created = cartItems.objects.get_or_create(cart=cart, product=product, defaults={'cart': cart, 'product': product, 'quantity': 1})
+        item.quantity += 1
+        item.save()
+        added = add_to_cart(request, product_id)
+        return JsonResponse({'success': True, 'new_quantity': item.quantity})           
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
 
 def subtract_quantity(request, product_id):
     """Add the quantity of the specific product"""
     if request.method == 'POST':
-        user = request.user
-
-        try:
-            product = Products.objects.get(id=product_id)
-            # Check if the product is already in the cart
-            cart, cart_created = Carts.objects.get_or_create(user=user, active=True, defaults={'user': user, 'active': True})
-            item, item_created = cartItems.objects.get_or_create(cart=cart, product=product, defaults={'cart': cart, 'product': product, 'quantity': 1})
-            if not item_created:
-                if item.quantity > 1:
-                    item.quantity -= 1
+        product = Products.objects.get(id=product_id)
+        # Check if the product is already in the cart
+        cart, cart_created = Carts.objects.get_or_create(user=request.user, active=True, defaults={'user': request.user, 'active': True})
+        item, item_created = cartItems.objects.get_or_create(cart=cart, product=product, defaults={'cart': cart, 'product': product, 'quantity': 1})
+        if item.quantity > 1:
+            item.quantity -= 1
             item.save()
-            return JsonResponse({'status': 'success'})
-        except Products.DoesNotExist:
-            return JsonResponse({'status': 'fail', 'message': 'Product not found'}, status=404)
-    return JsonResponse({'status': 'fail', 'message': 'Invalid request method'}, status=400)
-
+            added = add_to_cart(request, product_id)
+            return JsonResponse({'success': True, 'new_quantity': item.quantity})
+        return JsonResponse({'success': False, 'error': 'Quantity cannot be less than 1'})
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
 def cart(request):
-    """Returns json of the items in the cart for the specific user"""
     if request.user.is_authenticated:
         try:
             # Get the cart for the current user
@@ -331,8 +305,15 @@ def cart(request):
         except Carts.DoesNotExist:
             # Handle the case where the cart does not exist
             return HttpResponse("Cart does not exist")
+        cart_items_with_totals = []
+        for item in cart_items:
+            total_price = item.product.price * item.quantity
+            cart_items_with_totals.append({
+                'item': item,
+                'total_price': total_price
+            })
         context = {
-            'cart_items': cart_items,
+            'cart_items_with_totals': cart_items_with_totals,
             'cart_id': cart.id,
         }
         return render(request, "shop/cart.html", context)
@@ -343,8 +324,9 @@ def cart(request):
         return render(request, 'shop/home.html', context)
 
 
-def delete(request, product):
-    """Deletes a product from the cart"""
+def remove_from_cart(request, product_id):
+    """Deletes a product from the cart in the product page"""
+    product = Products.objects.filter(id=product_id).first()
     try:
         # Get the cart for the current user
         cart = get_object_or_404(Carts, user=request.user, active=True)
@@ -353,7 +335,30 @@ def delete(request, product):
         return HttpResponse("Cart does not exist")
     cart_item = cartItems.objects.filter(cart=cart, product=product)
     cart_item.delete()
-    return HttpResponse(f"Product {product.id} has been deleted from user {request.user.id} cart.")
+    return JsonResponse({'success': True})
+
+
+def remove(request, product_id):
+    """Deletes a product from the cart in the cart page"""
+    product = Products.objects.filter(id=product_id).first()
+    if not product:
+        return JsonResponse({'success': False, 'message': 'Product does not exist'})
+    
+    try:
+        # Get the cart for the current user
+        cart = get_object_or_404(Carts, user=request.user, active=True)
+    except Carts.DoesNotExist:
+        # Handle the case where the cart does not exist
+        return JsonResponse({'success': False, 'message': 'Cart does not exist'})
+    
+    # Find and delete the cart item
+    cart_item = cartItems.objects.filter(cart=cart, product=product)
+    if not cart_item.exists():
+        return JsonResponse({'success': False, 'message': 'Item not found in cart'})
+    
+    cart_item.delete()
+    
+    return JsonResponse({'success': True})
 
 
 def shipping_cost(request, user_id):
