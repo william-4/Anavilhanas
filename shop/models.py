@@ -55,7 +55,7 @@ class Products(models.Model):
 
 
 class Images(models.Model):
-    product = models.OneToOneField(Products, related_name='images', on_delete=models.PROTECT)
+    product = models.OneToOneField(Products, related_name='images', on_delete=models.CASCADE)
     image1 = models.ImageField(upload_to='products/images/')
     image2 = models.ImageField(upload_to='products/images/', blank=True, null=True)
     image3 = models.ImageField(upload_to='products/images/', blank=True, null=True)
@@ -74,7 +74,7 @@ class Carts(models.Model):
 
 class cartItems(models.Model):
     cart = models.ForeignKey(Carts, on_delete=models.PROTECT)
-    product = models.ForeignKey(Products, on_delete=models.PROTECT)
+    product = models.ForeignKey(Products, on_delete=models.SET_NULL, null=True)  # I should not loose the cart item on deletion of a product. Code has to be improved
     quantity = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -91,7 +91,7 @@ class Orders(models.Model):
 
 class orderItems(models.Model):
     order = models.ForeignKey(Carts, on_delete=models.PROTECT)
-    product = models.ForeignKey(Products, on_delete=models.PROTECT)
+    product = models.ForeignKey(Products, on_delete=models.SET_NULL, null=True)  # I should not loose the cart item on deletion of a product. Code has to be improved
     quantity = models.IntegerField(default=1)
     price = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

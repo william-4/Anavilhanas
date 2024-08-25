@@ -21,3 +21,25 @@ To do:
     - function that sends an email with the order
 3. Newsletter to periodic catalogue. Optional create account to edit shipping information.
 4. Product Details: Name, price, image(min. of 1), 
+
+Order Confirmation table:
+User, Order, Expected amount, Receive amount, 
+
+Pay with M-Pesa:
+Prompt the user on the front-end, explicitly showing the amount to be paid and informing the user that he will be prompted on the provided phone number to make the payment. User presses accept or reject.
+When user presses accept, the request goes to the payment view function:
+Receives the user, order.
+Calculates the total for the order and adds it to the order confirmation table: (user, order, amount, payment method, payment status, created_at, updated_at)
+Call payment api with the the necessary details and the amount as well as the order number which should be returned to the callback.
+When callback receives the message:
+if successful:
+    update order confirmation table, using the order id received to confirm the entry.
+    enter details received into payments table:
+    complete the order for the user and prompt them to proceed.
+    On agreement, take them to order confirmation page.
+if not successful:
+    enter details into payments table
+    abort and inform the user that payment was not successful. Inform them why.
+    return checkout page
+
+

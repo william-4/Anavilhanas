@@ -8,107 +8,65 @@
             {% csrf_token %}
             <div class="flex gap-5 justify-between max-md:flex-wrap max-md:max-w-full">
                 <div class="w-1/2 max-md:w-full">
-                    <label for="{{ form1.first_name.id_for_label }}" class="">Name</label>
-                    <input id="{{ form1.first_name.id_for_label }}" type="text" name="{{ form1.first_name.name }}" value="{{ form1.first_name.value }}" placeholder="" class="w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required>
+                    <label for="profile_name" class="">Name</label>
+                    <input id="profile_name" type="text" name="profile-first_name" value="{{ form1.first_name.value|default_if_none:'' }}" placeholder="" class="form-input w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required readonly>
                 </div>
                 <div class="w-1/2 max-md:w-full">
-                    <label for="{{ form1.phone_number.id_for_label }}" class="">Phone number</label>
-                    <input id="{{ form1.phone_number.id_for_label }}" type="text" name="{{ form1.phone_number.name }}" value="{{ form1.phone_number.value }}" placeholder="" class="w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required>
+                    <label for="profile_phone_number" class="">Phone number</label>
+                    <input id="profile_phone_number" type="text" name="profile-phone_number" value="{{ form1.phone_number.value|default_if_none:'' }}" placeholder="" class="form-input w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required readonly>
                 </div>
-            </div>
+            </div>         
             <div class="flex gap-5 pt-5 justify-between max-md:flex-wrap max-md:max-w-full">
                 <div class="w-1/2 max-md:w-full">
-                    <label for="{{ form1.email.id_for_label }}" class=""><p style="font-style: italic;">Your favorite email address:</p></label>
-                    <input id="{{ form1.email.id_for_label }}" type="text" name="{{ form1.email.name }}" value="{{ form1.email.value }}" placeholder="" class="w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required>
+                    <label for="profile_email_address" class=""><p style="font-style: italic;">Your favorite email address:</p></label>
+                    <input id="profile_email_address" type="text" name="profile-email" value="{{ form1.email.value|default_if_none:'' }}" placeholder="" class="form-input w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required readonly>
                 </div>
                 <div class="w-1/2 max-md:w-full">
-                    <label for="{{ form1.date_of_birth.id_for_label }}" class=""><p style="font-style: italic;">Get special offers on your birthday</p></label>
-                    <input id="{{ form1.date_of_birth.id_for_label }}" type="date" name="{{ form1.date_of_birth.name }}" value="{{ form1.date_of_birth.value }}" placeholder="" class="w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full">
+                    <label for="profile_birth_date" class=""><p style="font-style: italic;">Get special offers on your birthday</p></label>
+                    <input id="profile_birth_date" type="date" name="profile-date_of_birth" value="{{ date_field|default_if_none:'' }}" placeholder="" class="form-input w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" readonly>
                 </div>
             </div>
             <h2 class="self-start pt-10 text-4xl font-bold text-gray-800 leading-[65.88px]">Shipping Location</h2>
-            {% if form2.city.value %}
                 <div class="flex gap-5 justify-between max-md:flex-wrap max-md:max-w-full">
                     <div class="w-1/2 max-md:w-full">
-                        <label for="{{ form2.city.id_for_label }}" class="">City</label>
-                        <input id="{{ form2.city.id_for_label }}" type="text" name="{{ form2.city.name }}" value="{{ form2.city.value }}" placeholder="City*" class="w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required>
+                        <label for="address_city" class="">City</label>
+                        <input id="address_city" type="text" name="address-city" value="{{ form2.city.value|default_if_none:'' }}" placeholder="City*" class="form-input w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required readonly>
                     </div>
                     <div class="w-1/2 max-md:w-full">
-                        <label for="{{ form2.town.id_for_label }}" class="">Town</label>
-                        <input id="{{ form2.town.id_for_label }}" type="text" name="{{ form2.town.name }}" value="{{ form2.town.value }}" placeholder="Town*" class="w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required>
+                        <label for="address_town" class="">Town</label>
+                        <input id="address_town" type="text" name="address-town" value="{{ form2.town.value|default_if_none:'' }}" placeholder="Town*" class="form-input w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required readonly>
                     </div>
                 </div>
                 <div class="flex gap-5 pt-5 justify-between max-md:flex-wrap max-md:max-w-full">
                     <div class="w-1/2 max-md:w-full">
-                        <label for="{{ form2.major_road.id_for_label }}" class="">Major road</label>
-                        <input id="{{ form2.major_road.id_for_label }}" type="text" name="{{ form2.major_road.name }}" value="{{ form2.major_road.value }}" placeholder="Major road*" class="w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required>
+                        <label for="address_major_road" class="">Major road</label>
+                        <input id="address_major_road" type="text" name="address-major_road" value="{{ form2.major_road.value|default_if_none:'' }}" placeholder="Major road*" class="form-input w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required readonly>
                     </div>
                     <div class="w-1/2 max-md:w-full">
-                        <label for="{{ form2.estate.id_for_label }}" class="">Estate</label>
-                        <input id="{{ form2.estate.id_for_label }}" type="text" name="{{ form2.estate.name }}" value="{{ form2.estate.value }}" placeholder="Estate" class="w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required>
+                        <label for="address_estate" class="">Estate</label>
+                        <input id="address_estate" type="text" name="address-estate" value="{{ form2.estate.value|default_if_none:'' }}" placeholder="Estate" class="form-input w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required readonly>
                     </div>
                 </div>
                 <div class="mt-10 max-md:mt-10 max-md:max-w-full">
-                    <label for="{{ form2.description.id_for_label }}" class="">Delivery location details</label>
-                    <textarea id="{{ form2.description.id_for_label }}" name="{{ form2.description.name }}" placeholder="Tell us more about your delivery location e.g. landmarks" class="w-full px-5 pt-3 pb-5 bg-white rounded-md border border-solid border-zinc-200 max-md:max-w-full">{{ form2.description.value }}</textarea>
+                    <label for="address_details" class="">Delivery location details</label>
+                    <textarea id="address_details" name="address-description" placeholder="Tell us more about your delivery location e.g. landmarks" rows="2" class="form-input w-full px-5 pt-3 pb-5 bg-white rounded-md border border-solid border-zinc-200 max-md:max-w-full" readonly>{{ form2.description.value|default_if_none:'' }}</textarea>
                 </div>
-            {% else %}
-                <div class="flex gap-5 justify-between max-md:flex-wrap max-md:max-w-full">
-                    <div class="w-1/2 max-md:w-full">
-                        <label for="{{ form2.city.id_for_label }}" class="">City</label>
-                        <input id="{{ form2.city.id_for_label }}" type="text" name="{{ form2.city.name }}" placeholder="City*" class="w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required>
-                    </div>
-                    <div class="w-1/2 max-md:w-full">
-                        <label for="{{ form2.town.id_for_label }}" class="">Town</label>
-                        <input id="{{ form2.town.id_for_label }}" type="text" name="{{ form2.town.name }}" placeholder="Town*" class="w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required>
-                    </div>
-                </div>
-                <div class="flex gap-5 pt-5 justify-between max-md:flex-wrap max-md:max-w-full">
-                    <div class="w-1/2 max-md:w-full">
-                        <label for="{{ form2.major_road.id_for_label }}" class="">Major road</label>
-                        <input id="{{ form2.major_road.id_for_label }}" type="text" name="{{ form2.major_road.name }}" placeholder="Major road*" class="w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required>
-                    </div>
-                    <div class="w-1/2 max-md:w-full">
-                        <label for="{{ form2.estate.id_for_label }}" class="">Estate</label>
-                        <input id="{{ form2.estate.id_for_label }}" type="text" name="{{ form2.estate.name }}" placeholder="Estate" class="w-full py-3 pr-4 pl-5 bg-white rounded-md border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" required>
-                    </div>
-                </div>
-                <div class="mt-10 max-md:mt-10 max-md:max-w-full">
-                    <label for="{{ form2.description.id_for_label }}" class="">Delivery location details</label>
-                    <textarea id="{{ form2.description.id_for_label }}" name="{{ form2.description.name }}" placeholder="Tell us more about your delivery location e.g. landmarks" class="w-full px-5 pt-3 pb-5 bg-white rounded-md border border-solid border-zinc-200 max-md:max-w-full">{{ form2.description.value }}</textarea>
-                </div>
-            {% endif %}
-            <button type="button" id="edit-button" class="w-full px-9 py-4 mt-16 text-lg font-bold leading-5 text-center text-white bg-gray-800 rounded-md max-md:px-5 max-md:mt-10 max-md:max-w-full">Edit</button>
+            <button type="button" id="editSaveBtn" onclick="toggleEditSave()" class="w-full px-9 py-4 mt-16 text-lg font-bold leading-5 text-center text-white bg-gray-800 rounded-md max-md:px-5 max-md:mt-10 max-md:max-w-full">Edit</button>
         </form>
     </main>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const editButton = document.getElementById('edit-button');
-        const formFields = document.querySelectorAll('#form-fields input, #form-fields textarea');
+    function toggleEditSave() {
+        const editSaveBtn = document.getElementById('editSaveBtn');
+        const inputs = document.querySelectorAll('.form-input');
 
-        // Disable form fields by default
-        formFields.forEach(field => {
-            field.setAttribute('readonly', 'true');
-        });
-
-        editButton.addEventListener('click', function() {
-            // Toggle readonly attribute
-            formFields.forEach(field => {
-                if (field.hasAttribute('readonly')) {
-                    field.removeAttribute('readonly');
-                } else {
-                    field.setAttribute('readonly', 'true');
-                }
-            });
-
-            // Toggle button text
-            if (editButton.innerText === 'Edit') {
-                editButton.innerText = 'Save';
-            } else {
-                editButton.innerText = 'Edit';
-            }
-        });
-    });
+        if (editSaveBtn.textContent === 'Edit') {
+            inputs.forEach(input => input.removeAttribute('readonly'));
+            editSaveBtn.textContent = 'Save';
+        }
+        else {
+            document.querySelector('form').submit();
+        }
+    }
 </script>
 {% endblock %}

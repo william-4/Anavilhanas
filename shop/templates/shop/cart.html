@@ -34,7 +34,11 @@
             {% endwith %}
         {% endfor %}
     </div>
-    
+    {% if message %}
+        <div>
+            <h2 class="text-2xl mb-5 m-4 font-semibold text-gray-900 max-md:max-w-full">No items in your cart yet</h2>
+        </div>
+    {% endif %}
     <div class="flex gap-5 justify-between mt-14 mr-6 ml-auto max-w-full text-base leading-6 text-gray-900 w-[360px] max-md:mt-10 max-md:mr-2.5">
         <div class="flex flex-col">
             <p>Subtotal</p>

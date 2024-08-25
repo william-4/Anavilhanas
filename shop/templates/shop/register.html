@@ -2,16 +2,9 @@
 
 {% block content %}
     <h2>Create your account</h2>
-    <form id="my-form" method="post">
+    <form id="my-form" method="post" action="{% url 'shop:register' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Sign Up</button>
     </form>
-
-    <script>
-        document.getElementById('my-form').addEventListener('submit', function(event) {        
-            // Clear the form fields
-            // document.getElementById('my-form').reset();
-        });
-    </script>
 {% endblock %}
