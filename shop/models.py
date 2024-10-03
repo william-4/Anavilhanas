@@ -71,6 +71,18 @@ class Carts(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=False)
 
+    def get_cart_total(self):
+        total = 0
+        items = 0
+        cart_items = self.cartitems_set.all()
+        for item in cart_items:
+            if item.product:
+                items += 1
+                item_total = item.product.price * item.quantity
+                total += item_total
+        return {"items": items, "total": total}
+
+
 
 class cartItems(models.Model):
     cart = models.ForeignKey(Carts, on_delete=models.PROTECT)
@@ -90,7 +102,7 @@ class Orders(models.Model):
 
 
 class orderItems(models.Model):
-    order = models.ForeignKey(Carts, on_delete=models.PROTECT)
+    order = models.ForeignKey(Orders, on_delete=models.PROTECT)
     product = models.ForeignKey(Products, on_delete=models.SET_NULL, null=True)  # I should not loose the cart item on deletion of a product. Code has to be improved
     quantity = models.IntegerField(default=1)
     price = models.IntegerField(default=0)

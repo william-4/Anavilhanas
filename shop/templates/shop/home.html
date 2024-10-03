@@ -3,49 +3,45 @@
 {% block title %}{% endblock %}
 
 {% block content %}
-<section class="flex justify-center items-center px-16 w-full text-lg font-bold text-center bg-white max-md:px-5 max-md:max-w-full">
-    <div class="flex flex-col my-9 max-w-full w-[569px]">
-      <h1 class="text-6xl text-gray-800 leading-[66px] max-md:max-w-full max-md:text-4xl max-md:leading-[53px]">
+<section class="flex justify-center items-center h-screen -mt-20 px-16 w-full text-lg font-bold text-center bg-white max-md:px-5 max-md:max-w-full">
+    <div class="flex flex-col my-0 max-w-full w-[569px]">
+      <h1 class="font-montserrat text-6xl text-[#17726d] leading-[66px] max-md:max-w-full max-md:text-4xl max-md:leading-[53px]">
         Elevate Your Shopping Experience
       </h1>
-      <p class="mt-12 leading-8 text-gray-500 max-md:mt-10 max-md:max-w-full">
+      <p class="font-roboto mt-12 leading-8 text-[#17726d] max-md:mt-10 max-md:max-w-full">
         Explore hand picked products in our catalogue curated for you from trusted voices in the community.
       </p>
-      <!-- <a href="{% url 'shop:products' %}" class="flex gap-2 self-center px-9 py-3 mt-16 text-white bg-gray-800 rounded-md leading-[100%] max-md:px-5 max-md:mt-10">
-        <span>Browse our Catalogue</span>
-        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0ada3a1bb9f7ef4fe841602570141c39f8ff81edd47034969024bfb3014c52e9?apiKey=45464f6dd8d54e08a5464968c5a9f90c&" class="shrink-0 aspect-square w-[18px]" alt="" />
-      </a> -->
     </div>
   </section>
-  <section class="flex z-10 justify-center items-center p-8 mt-0 w-full bg-white max-md:px-5 max-md:max-w-full">
+  <section class="flex z-10 justify-center items-center p- mt-0 w-full bg-white max-md:px-5 max-md:max-w-full">
     <div class="flex flex-col items-center w-full max-w-[1212px] max-md:max-w-full">
       <h2 class="text-4xl font-bold text-center text-gray-800 leading-[66px] max-md:max-w-full">
         Popular Products
       </h2>
-      <div class="justify-center self-stretch mt-6 max-md:max-w-full">
-        <div class="flex gap-5 max-md:flex-col max-md:gap-0">
-          <article class="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
+      <div class="flex justify-center self-stretch mt-6 max-md:max-w-full">
+        <div class="flex gap-5 w-4/5 justify-center max-md:flex-col max-md:gap-0">
+          <article class="flex rouned-lg flex-col w-3/12 max-md:ml-0 max-md:w-full">
             <div class="flex flex-col grow justify-center max-md:mt-10">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/80144864090cb2fefc4d4856b78dbdd4c46585840f4ddc96a088c85c6a728506?apiKey=45464f6dd8d54e08a5464968c5a9f90c&" alt="Man's Black Shirt" class="self-stretch w-full aspect-[0.9] shadow-md" />
               <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">Man's Black Shirt</h3>
               <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES 35.00</p>
             </div>
           </article>
-          <article class="flex flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
+          <article class="flex rouned-lg flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
             <div class="flex flex-col grow justify-center max-md:mt-10">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/80144864090cb2fefc4d4856b78dbdd4c46585840f4ddc96a088c85c6a728506?apiKey=45464f6dd8d54e08a5464968c5a9f90c&" alt="Man's Black Shirt" class="self-stretch w-full aspect-[0.9] shadow-md" />
               <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">Man's Black Shirt</h3>
               <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES 35.00</p>
             </div>
           </article>
-          <article class="flex flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
+          <article class="flex rouned-lg flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
             <div class="flex flex-col grow justify-center max-md:mt-10">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/80144864090cb2fefc4d4856b78dbdd4c46585840f4ddc96a088c85c6a728506?apiKey=45464f6dd8d54e08a5464968c5a9f90c&" alt="Man's Black Shirt" class="self-stretch w-full aspect-[0.9] shadow-md" />
               <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">Man's Black Shirt</h3>
               <p class="mt-1.5 text-base font-medium leading-6 text-gray-500">KES 35.00</p>
             </div>
           </article>
-          <article class="flex flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
+          <article class="flex rouned-lg flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
             <div class="flex flex-col grow justify-center max-md:mt-10">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/80144864090cb2fefc4d4856b78dbdd4c46585840f4ddc96a088c85c6a728506?apiKey=45464f6dd8d54e08a5464968c5a9f90c&" alt="Man's Black Shirt" class="self-stretch w-full aspect-[0.9] shadow-md" />
               <h3 class="mt-5 text-xl font-semibold leading-7 text-gray-800">Man's Black Shirt</h3>
@@ -57,54 +53,41 @@
     </div>
   </section>
   <section class="flex justify-center items-center px-16 py-20 w-full bg-white max-md:px-5 max-md:max-w-full">
-    <div class="w-full max-w-[1192px] max-md:max-w-full">
-      <div class="flex gap-5 max-md:flex-col max-md:gap-0">
         <div class="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
           <div class="flex flex-col mt-18 text-lg font-bold max-md:mt-10 max-md:max-w-full">
-            <h2 class="text-2xl leading-9 text-gray-800 max-md:max-w-full">We strive to promote buyer confidence</h2>
-            <p class="mt-4 leading-8 text-gray-500 max-md:max-w-full">Our approach is designed with trust at its core. We partner with your favourite content and value creators who review and approve our products before becoming one of our trusted affiliates.</p>
-            <p class="mt-4 leading-8 text-gray-500 max-md:max-w-full">As an affiliate, you can passively earn money while providing genuine value to your audience.</p>
-            <a href="{% url 'shop:products' %}" class="justify-center self-start px-9 py-3 mt-16 text-center bg-white rounded-xl border-2 border-gray-800 border-solid leading-[100%] text-slate-500 max-md:px-5 max-md:mt-10" tabindex="0" role="button">Become an affiliate</a>
+            <h2 class="text-center text-2xl leading-9 text-gray-800 max-md:max-w-full">We strive to promote buyer confidence</h2>
+            <p class="text-center font-roboto mt-4 leading-8 text-gray-500 max-md:max-w-full">At Anavilhanas, we are dedicated to empowering our community and involving our members in shaping our offerings. Our mission has and always will be to actively engage with our users to customize our products and services according to your needs. We take pride in crafting a shopping experience that is both meaningful and tailored to your preferences.</p>
+            <a href="{% url 'shop:products' %}" class="justify-center px-9 py-3 mt-16 text-center bg-white rounded-xl border-2 border-gray-800 border-solid leading-[100%] text-slate-500 max-md:px-5 max-md:mt-10" tabindex="0" role="button">Become a member</a>
           </div>
         </div>
-        <div class="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
-          <div class="flex grow justify-center items-center px-16 py-20 w-full bg-slate-50 max-md:px-5 max-md:mt-10 max-md:max-w-full">
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/783dfd819243ce004d1d48966f307fa64c9fe45c8fa97b64be138e5ce003ba5c?apiKey=45464f6dd8d54e08a5464968c5a9f90c&" alt="Illustration representing buyer confidence" class="mt-24 max-w-full aspect-[1.14] w-[123px] max-md:mt-10" />
-          </div>
-        </div>
-      </div>
-    </div>
   </section>
   <section class="flex flex-col items-center px-16 pt-12 pb-6 w-full bg-white max-md:px-5 max-md:max-w-full">
     <div class="flex flex-col items-center w-full max-w-[1222px] max-md:max-w-full">
-      <h2 class="text-4xl font-bold leading-10 text-center text-gray-900 max-md:max-w-full">Explore your interests</h2>
-      <p class="mt-4 text-base leading-6 text-center text-gray-500 max-md:max-w-full">
-        Find products that match your specific preference and satisfy your curiosity.
-      </p>
+      <h2 class="text-4xl font-bold leading-10 text-center text-gray-900 max-md:max-w-full">Featured Categories</h2>
       <div class="self-stretch mx-7 mt-16 max-md:mt-10 max-md:mr-2.5 max-md:max-w-full">
         <div class="flex gap-5 max-md:flex-col max-md:gap-0">
-          <article class="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
+          <article class="flex rouned-lg flex-col w-3/12 max-md:ml-0 max-md:w-full">
             <div class="flex flex-col grow items-center text-center max-md:mt-8">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/b5fa1ef06410d5ed515a71a64ef31416b2444fe63c55603125c5e12ae4ab89bc?apiKey=45464f6dd8d54e08a5464968c5a9f90c&" alt="Accessories category" class="self-stretch w-full aspect-[1.19] shadow-md" />
               <h3 class="mt-5 text-2xl font-semibold text-gray-900">Home Workouts</h3>
               <p class="mt-1.5 text-base leading-6 text-gray-500">8 Products Available</p>
             </div>
           </article>
-          <article class="flex flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
+          <article class="flex rouned-lg flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
             <div class="flex flex-col grow items-center text-center max-md:mt-8">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/475401e2709fcf0fda11ce9d2157213525b2aa1fa7225b85a8e4e97786393354?apiKey=45464f6dd8d54e08a5464968c5a9f90c&" alt="Bags category" class="self-stretch w-full aspect-[1.19] shadow-md" />
               <h3 class="mt-5 text-2xl font-semibold text-gray-900">Nutrition</h3>
               <p class="mt-1.5 text-base leading-6 text-gray-500">4 Products Available</p>
             </div>
           </article>
-          <article class="flex flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
+          <article class="flex rouned-lg flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
             <div class="flex flex-col grow items-center text-center max-md:mt-8">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/18ed3e4da60ae421147a8c786c07c8143cf2b4c3044197514e385d986cd2422e?apiKey=45464f6dd8d54e08a5464968c5a9f90c&" alt="Electronics category" class="self-stretch w-full aspect-[1.19] shadow-md" />
               <h3 class="mt-5 text-2xl font-semibold text-gray-900">Gym Equipment</h3>
               <p class="mt-1.5 text-base leading-6 text-gray-500">12 Products Available</p>
             </div>
           </article>
-          <article class="flex flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
+          <article class="flex rouned-lg flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
             <div class="flex flex-col grow items-center text-center max-md:mt-8">
               <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0b360f03d4e8672aa8ae4fffde258bd6810d690756a2732dfa4e2b81860c17e7?apiKey=45464f6dd8d54e08a5464968c5a9f90c&" alt="Shoes category" class="self-stretch w-full aspect-[1.19] shadow-md" />
               <h3 class="mt-5 text-2xl font-semibold text-gray-900">Supplements</h3>
@@ -114,7 +97,7 @@
         </div>
       </div>
 	  <a href="{% url 'shop:products' %}" class="flex gap-2 self-center px-9 py-3 mt-16 text-white bg-gray-800 rounded-md leading-[100%] max-md:px-5 max-md:mt-10">
-        <span>All Categories</span>
+        <span>Browse</span>
         <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/0ada3a1bb9f7ef4fe841602570141c39f8ff81edd47034969024bfb3014c52e9?apiKey=45464f6dd8d54e08a5464968c5a9f90c&" class="shrink-0 aspect-square w-[18px]" alt="" />
       </a>
 	  <h1 class="mt-20 mb-10 text-4xl font-bold leading-5 text-center text-gray-900 max-md:mt-10">Frequently asked questions</h1>

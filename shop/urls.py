@@ -34,10 +34,12 @@ urlpatterns = [
     path('add_quantity/<int:product_id>/', views.add_quantity, name='add_quantity'),
     path('subtract_quantity/<int:product_id>/', views.subtract_quantity, name='subtract_quantity'),
     path('checkout/', views.checkout, name="checkout"),
-    path('order_confirmation/', views.order_confirmation, name="order_confirmation"),
     path('stk_callback/', views.process_stk_callback, name="mpesa_callback"),
     path('stk_push/', views.initiate_stk_push, name="stk_push"),
-
+    path('checkout/place_order/<int:cart_id>/', views.place_order, name='place_order'),
+    path('stk_push_callback/', views.stk_push_callback, name="stk_push_callback"),
+    path('test/', views.test, name='test'),
+    path('checkout/order_confirmation/', views.order_confirmation, name='order_confirmation')
 ]
 
 # Serving media files only during development

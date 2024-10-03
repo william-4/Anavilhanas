@@ -3,14 +3,14 @@
     <main class="container mx-auto flex z-10 flex-col justify-center px-16 py-0 w-full bg-white max-md:px-5 max-md:max-w-full">
         <section class="mt-10 mb-4 max-md:mr-2 max-md:max-w-full">
             <div class="flex gap-5 max-md:flex-col">
-                    <div class="flex flex-col w-[57%] max-md:ml-0 max-md:w-full">
+                    <div class="flex flex-col w-[60%] max-md:ml-0 max-md:w-full">
                         <div class="flex flex-col grow max-md:mt-10 max-md:max-w-full">
-                            <img loading="lazy" src="{{ product.images.image1.url }}" alt="Main product image" class="w-full aspect-w-4 aspect-h-3 max-md:max-w-full" />
+                            <img loading="lazy" src="{{ product.images.image1.url }}" alt="Main product image" class="rouned-lg w-full aspect-w-4 aspect-h-3 max-md:max-w-full" />
                             <div class="mt-8 max-md:pr-5 max-md:max-w-full">
                                 <div class="flex gap-5 max-md:flex-col">
-                                    <img loading="lazy" src="{{ product.images.image1.url }}" alt="Product image 1" class="shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
-                                    <img loading="lazy" src="{{ product.images.image2.url }}" alt="Product image 2" class="shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
-                                    <img loading="lazy" src="{{ product.images.image3.url }}" alt="Product image 3" class="shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
+                                    <img loading="lazy" src="{{ product.images.image1.url }}" alt="Product image 1" class="rouned-lg shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
+                                    <img loading="lazy" src="{{ product.images.image2.url }}" alt="Product image 2" class="rouned-lg shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
+                                    <img loading="lazy" src="{{ product.images.image3.url }}" alt="Product image 3" class="rouned-lg shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
         <div class="justify-center self-center mt-10 mb-5 w-full max-w-[1158px] max-md:max-w-full">
             <div class="flex gap-5 max-md:flex-col">
                 {% for product in other_products %}
-                    <article class="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
+                    <article class="flex rouned-lg flex-col w-3/12 max-md:ml-0 max-md:w-full">
                         <div class="flex flex-col grow justify-center items-center text-center max-md:mt-7">
                             <a href="{% url 'shop:product' product.id %}">
                                     <img loading="lazy" src="{{ product.images.image1.url }}" alt="{{product.name}}" class="self-stretch w-full aspect-[0.9]" />
@@ -103,7 +103,7 @@
                 }
             });
             } else if (buttonText === "Add to cart") {
-                let url = `/product/${product_id}/add_to_cart/`;  // Construct the URL with product ID
+                let url = `/product/${product_id}/add_to_cart/`;  // Construct the URL with product ID product/<int:product_id>/add_to_cart/
                 $.ajax({
                 url: url,
                 type: 'POST',
