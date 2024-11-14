@@ -36,9 +36,9 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 # CUSTOM User Model
 AUTH_USER_MODEL = 'shop.customUser'
 
-ALLOWED_HOSTS = ['e191-105-163-2-247.ngrok-free.app', '127.0.0.1']
+ALLOWED_HOSTS = ['mwangii.pythonanywhere.com', '127.0.0.1']
 
-CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://mwangii.pythonanywhere.com']
 
 # Set Django settings module
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', os.getenv('DJANGO_SETTINGS_MODULE'))
