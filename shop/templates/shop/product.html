@@ -8,9 +8,15 @@
                             <img loading="lazy" src="{{ product.images.image1.url }}" alt="Main product image" class="rouned-lg w-full aspect-w-4 aspect-h-3 max-md:max-w-full" />
                             <div class="mt-8 max-md:pr-5 max-md:max-w-full">
                                 <div class="flex gap-5 max-md:flex-col">
-                                    <img loading="lazy" src="{{ product.images.image1.url }}" alt="Product image 1" class="rouned-lg shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
-                                    <img loading="lazy" src="{{ product.images.image2.url }}" alt="Product image 2" class="rouned-lg shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
-                                    <img loading="lazy" src="{{ product.images.image3.url }}" alt="Product image 3" class="rouned-lg shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
+                                    {% if product.images.image1 %}
+                                        <img loading="lazy" src="{{ product.images.image1.url }}" alt="Product image 1" class="rouned-lg shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
+                                    {% endif %}
+                                    {% if product.images.image2 %}
+                                        <img loading="lazy" src="{{ product.images.image2.url }}" alt="Product image 2" class="rouned-lg shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
+                                    {% endif %}
+                                    {% if product.images.image3 %}
+                                        <img loading="lazy" src="{{ product.images.image3.url }}" alt="Product image 3" class="rouned-lg shrink-0 max-w-full aspect-square w-[186px] max-md:mt-8" />
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

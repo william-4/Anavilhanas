@@ -100,19 +100,24 @@ def affiliate(request):
 
 def products(request, category_id=None):
     categories = Categories.objects.all()
-    if category_id is not None:
-        category_products = Products.objects.filter(category_id=category_id).order_by('created_at')
-    else:
-        category_products = Products.objects.filter(category=categories[0]).order_by('created_at')
-    
-    paginator = Paginator(category_products, 9)
-    page = request.GET.get('page')
+    category_products = "Category"
     try:
-        products = paginator.page(page)
-    except PageNotAnInteger:
-        products = paginator.page(1)
-    except EmptyPage:
-        products = paginator.page(paginator.num_pages)
+        if category_id is not None:
+            category_products = Products.objects.filter(category_id=category_id).order_by('created_at')
+        else:
+            category_products = Products.objects.filter(category=categories[0]).order_by('created_at')
+    except:
+        pass
+    
+    if category_products:
+        paginator = Paginator(category_products, 9)
+        page = request.GET.get('page')
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            products = paginator.page(1)
+        except EmptyPage:
+            products = paginator.page(paginator.num_pages)
 
     context = {
         "categories": categories,
