@@ -1,7 +1,6 @@
 # Anavilhanas
 
-Example:  
-This is a simple online shop application built with Django. It allows users to browse products, add them to the cart, and proceed to checkout. Admin users can manage products, view orders, and handle user accounts.
+### This is a simple online shop application built with Django. It allows users to browse products, add them to the cart, and proceed to checkout. Admin users can manage products, view orders, and handle user accounts.
 
 ## Features
 - User authentication (register, login, logout)
@@ -33,8 +32,8 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 ### Create a superuser (for admin access)
-```
-bash python manage.py createsuperuser
+```bash
+python manage.py createsuperuser
 ```
 ### Run the Development Server
 ```bash
