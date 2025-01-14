@@ -20,8 +20,8 @@ This is a simple online shop application built with Django. It allows users to b
 
 ### Clone the repository
 ```bash
-git clone https://github.com/your-username/django-project-name.git
-cd django-project-name
+git clone https://github.com/william-4/Anavilhanas.git
+cd Anavilhanas
 python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
@@ -29,10 +29,14 @@ pip install -r requirements.txt
 ### Create a PostgreSQL database (or another DB) and configure your database settings in settings.py.
 
 ### Run migrations
-```bash python manage.py migrate ```
-
+```bash
+python manage.py migrate
+```
 ### Create a superuser (for admin access)
-```bash python manage.py createsuperuser ```
-
+```
+bash python manage.py createsuperuser
+```
 ### Run the Development Server
-```bash python manage.py runserver ```
+```bash
+python manage.py runserver
+```
